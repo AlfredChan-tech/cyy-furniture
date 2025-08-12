@@ -689,6 +689,16 @@ body {
     margin-bottom: 8px;
 }
 
+.product-title a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.product-title a:hover {
+    color: #8b7355;
+}
+
 .product-description {
     font-size: 13px;
     color: #666;
@@ -1283,12 +1293,30 @@ body {
 /* 響應式設計 */
 @media (max-width: 768px) {
     .nav-container {
-        padding: 0 20px;
+        padding: 0 15px;
+        height: 70px;
+        grid-template-columns: auto 1fr auto;
     }
     
     .logo h1 {
         font-size: 24px;
         letter-spacing: 1px;
+    }
+    
+    /* 修復導航圖標間距 */
+    .nav-icons {
+        gap: 10px;
+    }
+    
+    .nav-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
+    }
+    
+    /* 修復主內容區域 */
+    body {
+        padding-top: 70px;
     }
     
     .nav-menu-container {
@@ -1380,28 +1408,78 @@ body {
 }
 
 @media (max-width: 480px) {
+    .nav-container {
+        padding: 0 10px;
+        height: 60px;
+    }
+    
+    .logo h1 {
+        font-size: 20px;
+    }
+    
+    .nav-icons {
+        gap: 8px;
+    }
+    
+    .nav-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+    
+    body {
+        padding-top: 60px;
+    }
+    
     .section-title {
-        font-size: 28px;
+        font-size: 24px;
+        margin-bottom: 20px;
     }
     
     .slide-text {
-        min-height: 200px;
+        min-height: 180px;
+        padding: 15px;
     }
     
     .slide-text h2 {
-        font-size: 24px;
-        margin-bottom: 15px;
+        font-size: 20px;
+        margin-bottom: 12px;
+        line-height: 1.3;
     }
     
     .slide-text p {
         font-size: 14px;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
+        line-height: 1.5;
     }
     
     .cta-button {
         padding: 12px 24px;
-        font-size: 10px;
-        margin-top: 5px;
+        font-size: 14px;
+        margin-top: 10px;
+        width: 100%;
+        max-width: 200px;
+        min-height: 44px; /* 觸摸友好的最小高度 */
+    }
+    
+    /* 觸摸友好的按鈕大小 */
+    .add-to-cart-btn,
+    .category-btn,
+    .quick-add-to-cart-btn {
+        min-height: 44px;
+        padding: 12px 20px;
+    }
+    
+    /* 產品網格在小屏幕上的優化 */
+    .products-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 0 10px;
+    }
+    
+    .product-card {
+        max-width: 100%;
+        margin: 0 auto;
     }
     
     .hero-carousel {
