@@ -1,0 +1,19 @@
+[build]
+builder = "NIXPACKS"
+
+[deploy]
+healthcheckPath = "/api/health"
+healthcheckTimeout = 100
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
+
+[[services]]
+name = "backend"
+source = "backend/"
+variables = { SPRING_PROFILES_ACTIVE = "prod" }
+
+[[services]]
+name = "frontend"  
+source = "./"
+buildCommand = "echo 'Static site, no build needed'"
+startCommand = "python -m http.server $PORT"
