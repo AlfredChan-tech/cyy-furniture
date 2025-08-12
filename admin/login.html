@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYY家具 - 管理員登錄</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            width: 100%;
+            max-width: 400px;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .login-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .login-header h1 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 600;
+        }
+        
+        .login-header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+        
+        .login-body {
+            padding: 40px 30px;
+        }
+        
+        .form-floating {
+            margin-bottom: 20px;
+        }
+        
+        .form-floating .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px 15px 5px 15px;
+            height: 60px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-floating .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        
+        .form-floating label {
+            color: #6c757d;
+            font-weight: 500;
+        }
+        
+        /* 修復密碼字段的label定位問題 */
+        .form-floating > .input-group {
+            position: relative;
+        }
+        
+        .form-floating > .input-group > .form-control {
+            padding: 20px 50px 5px 15px;
+        }
+        
+        .form-floating:focus-within label,
+        .form-floating > .input-group > .form-control:focus ~ label,
+        .form-floating > .input-group > .form-control:not(:placeholder-shown) ~ label {
+            opacity: 0.65;
+            transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+        }
+        
+        /* 確保用戶名字段的label動畫也正常工作 */
+        .form-floating > .form-control:focus ~ label,
+        .form-floating > .form-control:not(:placeholder-shown) ~ label {
+            opacity: 0.65;
+            transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+        }
+        
+        .btn-login {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-login:active {
+            transform: translateY(0);
+        }
+        
+        .btn-login:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ffffff;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #f5c6cb;
+            display: none;
+        }
+        
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
+            display: none;
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .remember-me input {
+            margin-right: 8px;
+        }
+        
+        .remember-me label {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin: 0;
+        }
+        
+        .login-footer {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .login-footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #6c757d;
+            cursor: pointer;
+            z-index: 10;
+            border-radius: 4px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .password-toggle:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+        
+        .input-group {
+            position: relative;
+        }
+        
+        @media (max-width: 576px) {
+            .login-container {
+                margin: 20px;
+                border-radius: 15px;
+            }
+            
+            .login-header {
+                padding: 30px 20px;
+            }
+            
+            .login-body {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h1>CYY管理後台</h1>
+            <p>請登錄您的管理員帳戶</p>
+        </div>
+        
+        <div class="login-body">
+            <div class="error-message" id="errorMessage"></div>
+            <div class="success-message" id="successMessage"></div>
+            
+            <form id="loginForm">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="username" name="username" placeholder=" " required>
+                    <label for="username">
+                        <i class="fas fa-user me-2"></i>用戶名
+                    </label>
+                </div>
+                
+                <div class="form-floating">
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="password" name="password" placeholder=" " required>
+                        <button type="button" class="password-toggle" id="passwordToggle">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <label for="password">
+                        <i class="fas fa-lock me-2"></i>密碼
+                    </label>
+                </div>
+                
+                <div class="remember-me">
+                    <input type="checkbox" id="rememberMe" name="rememberMe">
+                    <label for="rememberMe">記住我</label>
+                </div>
+                
+                <button type="submit" class="btn btn-login" id="loginBtn">
+                    <div class="loading-spinner" id="loadingSpinner"></div>
+                    <span id="loginText">登錄</span>
+                </button>
+            </form>
+        </div>
+        
+        <div class="login-footer">
+            <a href="#" id="forgotPassword">忘記密碼？</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        class AdminLogin {
+            constructor() {
+                this.apiBase = 'http://localhost:8080/api';
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.checkExistingLogin();
+            }
+
+            setupEventListeners() {
+                // 登錄表單提交
+                document.getElementById('loginForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleLogin();
+                });
+
+                // 密碼顯示/隱藏切換
+                document.getElementById('passwordToggle').addEventListener('click', () => {
+                    this.togglePasswordVisibility();
+                });
+
+                // 忘記密碼
+                document.getElementById('forgotPassword').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.handleForgotPassword();
+                });
+
+                // 回車鍵提交
+                document.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+                    }
+                });
+            }
+
+            // 檢查現有登錄狀態
+            checkExistingLogin() {
+                const token = localStorage.getItem('adminToken');
+                if (token) {
+                    this.verifyToken(token);
+                }
+            }
+
+            // 驗證令牌
+            async verifyToken(token) {
+                try {
+                    const response = await fetch(`${this.apiBase}/auth/verify`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+
+                    if (response.ok) {
+                        this.showSuccess('已登錄，正在跳轉...');
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 1000);
+                    }
+                } catch (error) {
+                    // 令牌無效，清除
+                    localStorage.removeItem('adminToken');
+                }
+            }
+
+            // 處理登錄
+            async handleLogin() {
+                const form = document.getElementById('loginForm');
+                const formData = new FormData(form);
+                const username = formData.get('username');
+                const password = formData.get('password');
+                const rememberMe = formData.get('rememberMe') === 'on';
+
+                if (!username || !password) {
+                    this.showError('請填寫完整的登錄信息');
+                    return;
+                }
+
+                this.setLoading(true);
+                this.hideMessages();
+
+                try {
+                    const response = await fetch(`${this.apiBase}/auth/login`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            username,
+                            password
+                        })
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        
+                        // 保存令牌
+                        if (rememberMe) {
+                            localStorage.setItem('adminToken', data.token);
+                        } else {
+                            sessionStorage.setItem('adminToken', data.token);
+                        }
+
+                        this.showSuccess('登錄成功，正在跳轉...');
+                        
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 1500);
+                    } else {
+                        const errorData = await response.json();
+                        this.showError(errorData.message || '登錄失敗，請檢查用戶名和密碼');
+                    }
+                } catch (error) {
+                    console.error('Login error:', error);
+                    // 在開發環境中，允許使用預設帳戶登錄
+                    if ((username === 'admin032630' && password === 'admin123') || 
+                        (username === 'CYY302630' && password === '1')) {
+                        this.handleMockLogin();
+                    } else {
+                        this.showError('登錄失敗，請檢查用戶名和密碼');
+                    }
+                } finally {
+                    this.setLoading(false);
+                }
+            }
+
+            // 處理模擬登錄（開發用）
+            handleMockLogin() {
+                const mockToken = 'mock-admin-token-' + Date.now();
+                const rememberMe = document.getElementById('rememberMe').checked;
+                const username = document.getElementById('username').value;
+                
+                // 根據"記住我"選擇保存位置
+                if (rememberMe) {
+                    localStorage.setItem('adminToken', mockToken);
+                    localStorage.setItem('adminUsername', username);
+                } else {
+                    sessionStorage.setItem('adminToken', mockToken);
+                    sessionStorage.setItem('adminUsername', username);
+                }
+                
+                this.showSuccess('登錄成功，正在跳轉...');
+                
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+            }
+
+            // 切換密碼可見性
+            togglePasswordVisibility() {
+                const passwordInput = document.getElementById('password');
+                const toggleButton = document.getElementById('passwordToggle');
+                const icon = toggleButton.querySelector('i');
+
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    passwordInput.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            }
+
+            // 處理忘記密碼
+            handleForgotPassword() {
+                alert('請聯繫系統管理員重置密碼');
+            }
+
+            // 設置載入狀態
+            setLoading(loading) {
+                const btn = document.getElementById('loginBtn');
+                const spinner = document.getElementById('loadingSpinner');
+                const text = document.getElementById('loginText');
+
+                if (loading) {
+                    btn.disabled = true;
+                    spinner.style.display = 'inline-block';
+                    text.textContent = '登錄中...';
+                } else {
+                    btn.disabled = false;
+                    spinner.style.display = 'none';
+                    text.textContent = '登錄';
+                }
+            }
+
+            // 顯示錯誤消息
+            showError(message) {
+                const errorDiv = document.getElementById('errorMessage');
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+                
+                setTimeout(() => {
+                    errorDiv.style.display = 'none';
+                }, 5000);
+            }
+
+            // 顯示成功消息
+            showSuccess(message) {
+                const successDiv = document.getElementById('successMessage');
+                successDiv.textContent = message;
+                successDiv.style.display = 'block';
+            }
+
+            // 隱藏所有消息
+            hideMessages() {
+                document.getElementById('errorMessage').style.display = 'none';
+                document.getElementById('successMessage').style.display = 'none';
+            }
+        }
+
+        // 初始化登錄頁面
+        document.addEventListener('DOMContentLoaded', () => {
+            new AdminLogin();
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,426 @@
+/* 搜索結果頁面樣式 */
+.search-results-main {
+    margin-top: 80px;
+    min-height: calc(100vh - 80px);
+}
+
+/* 搜索標題區域 */
+.search-header {
+    padding: 40px 0 20px;
+    border-bottom: 1px solid #f0f0f0;
+    margin-bottom: 30px;
+}
+
+.search-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 500;
+    color: #2c2c2c;
+    margin-bottom: 10px;
+}
+
+.search-info {
+    font-size: 16px;
+    color: #666;
+    margin: 0;
+}
+
+.search-info span {
+    font-weight: 600;
+    color: #8b7355;
+}
+
+/* 搜索篩選器 */
+.search-filters {
+    margin-bottom: 40px;
+}
+
+.filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.filter-group label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #2c2c2c;
+    white-space: nowrap;
+}
+
+.filter-group select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: white;
+    min-width: 120px;
+    cursor: pointer;
+}
+
+.filter-group select:focus {
+    outline: none;
+    border-color: #8b7355;
+}
+
+.clear-filters {
+    background-color: #8b7355;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.clear-filters:hover {
+    background-color: #705d47;
+}
+
+/* 搜索結果網格 */
+.search-results {
+    margin-bottom: 60px;
+}
+
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+/* 產品卡片樣式 - 繼承自主頁面 */
+.product-card {
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.product-image {
+    position: relative;
+    height: 250px;
+    overflow: hidden;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-image img {
+    transform: scale(1.05);
+}
+
+.product-overlay {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.product-card:hover .product-overlay {
+    opacity: 1;
+}
+
+.wishlist-btn,
+.quick-view-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+.wishlist-btn:hover,
+.quick-view-btn:hover {
+    background-color: #8b7355;
+    color: white;
+    transform: scale(1.1);
+}
+
+.product-info {
+    padding: 25px;
+}
+
+.product-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.product-description {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.product-price {
+    margin-bottom: 20px;
+}
+
+.current-price {
+    font-size: 18px;
+    font-weight: 600;
+    color: #8b7355;
+}
+
+.original-price {
+    font-size: 14px;
+    color: #999;
+    text-decoration: line-through;
+    margin-left: 10px;
+}
+
+.add-to-cart-btn {
+    width: 100%;
+    background-color: #8b7355;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 4px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+.add-to-cart-btn:hover {
+    background-color: #705d47;
+    transform: translateY(-2px);
+}
+
+/* 無結果顯示 */
+.no-results {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.no-results-content i {
+    font-size: 64px;
+    color: #ccc;
+    margin-bottom: 20px;
+}
+
+.no-results-content h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 500;
+    color: #2c2c2c;
+    margin-bottom: 15px;
+}
+
+.no-results-content p {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.back-home-btn {
+    display: inline-block;
+    background-color: #8b7355;
+    color: white;
+    padding: 12px 24px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+.back-home-btn:hover {
+    background-color: #705d47;
+    transform: translateY(-2px);
+}
+
+/* 分頁 */
+.pagination {
+    margin-top: 40px;
+    padding-top: 40px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.pagination-btn {
+    background-color: white;
+    color: #2c2c2c;
+    border: 1px solid #ddd;
+    padding: 10px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.pagination-btn:hover:not(:disabled) {
+    background-color: #8b7355;
+    color: white;
+    border-color: #8b7355;
+}
+
+.pagination-btn:disabled {
+    background-color: #f5f5f5;
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+.pagination-numbers {
+    display: flex;
+    gap: 5px;
+}
+
+.page-number {
+    background-color: white;
+    color: #2c2c2c;
+    border: 1px solid #ddd;
+    padding: 10px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    font-weight: 500;
+    min-width: 40px;
+    text-align: center;
+}
+
+.page-number:hover {
+    background-color: #8b7355;
+    color: white;
+    border-color: #8b7355;
+}
+
+.page-number.active {
+    background-color: #8b7355;
+    color: white;
+    border-color: #8b7355;
+}
+
+/* 載入動畫 */
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #8b7355;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .search-title {
+        font-size: 28px;
+    }
+    
+    .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+    
+    .filter-group {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 5px;
+    }
+    
+    .filter-group select {
+        min-width: auto;
+    }
+    
+    .results-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+    }
+    
+    .pagination-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .pagination-numbers {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .search-header {
+        padding: 20px 0 15px;
+    }
+    
+    .search-title {
+        font-size: 24px;
+    }
+    
+    .search-info {
+        font-size: 14px;
+    }
+    
+    .results-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .product-card {
+        margin-bottom: 20px;
+    }
+    
+    .filter-bar {
+        padding: 15px;
+    }
+} 

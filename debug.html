@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>購物車調試 - CYY</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .debug-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #8b7355;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .debug-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .debug-section h2 {
+            color: #333;
+            margin-top: 0;
+            font-size: 18px;
+        }
+        pre {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+        }
+        .btn {
+            background: #8b7355;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        .btn:hover {
+            background: #6d5a41;
+        }
+        .btn.danger {
+            background: #e53e3e;
+        }
+        .btn.danger:hover {
+            background: #c53030;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .status.success {
+            background: #c6f6d5;
+            color: #2f855a;
+        }
+        .status.error {
+            background: #fed7d7;
+            color: #c53030;
+        }
+    </style>
+</head>
+<body>
+    <div class="debug-container">
+        <h1>購物車調試工具</h1>
+        
+        <div class="debug-section">
+            <h2>購物車狀態</h2>
+            <div id="cartStatus" class="status">檢查中...</div>
+            <pre id="cartData"></pre>
+        </div>
+        
+        <div class="debug-section">
+            <h2>測試操作</h2>
+            <button class="btn" onclick="addTestProduct()">添加測試商品</button>
+            <button class="btn" onclick="clearCart()">清空購物車</button>
+            <button class="btn" onclick="refreshData()">重新載入數據</button>
+            <button class="btn danger" onclick="clearAllData()">清空所有數據</button>
+        </div>
+        
+        <div class="debug-section">
+            <h2>願望清單狀態</h2>
+            <pre id="wishlistData"></pre>
+        </div>
+        
+        <div class="debug-section">
+            <h2>localStorage 所有數據</h2>
+            <pre id="allData"></pre>
+        </div>
+        
+        <div class="debug-section">
+            <h2>快速導航</h2>
+            <button class="btn" onclick="window.location.href='index.html'">回到首頁</button>
+            <button class="btn" onclick="window.location.href='cart.html'">查看購物車</button>
+        </div>
+    </div>
+
+    <script>
+        // 載入並顯示購物車數據
+        function loadCartData() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const cartStatus = document.getElementById('cartStatus');
+            const cartData = document.getElementById('cartData');
+            
+            if (cart.length === 0) {
+                cartStatus.className = 'status error';
+                cartStatus.textContent = '購物車為空';
+            } else {
+                cartStatus.className = 'status success';
+                cartStatus.textContent = `購物車中有 ${cart.length} 件商品`;
+            }
+            
+            cartData.textContent = JSON.stringify(cart, null, 2);
+        }
+        
+        // 載入願望清單數據
+        function loadWishlistData() {
+            const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            const wishlistData = document.getElementById('wishlistData');
+            wishlistData.textContent = JSON.stringify(wishlist, null, 2);
+        }
+        
+        // 載入所有localStorage數據
+        function loadAllData() {
+            const allData = {};
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                allData[key] = JSON.parse(localStorage.getItem(key) || 'null');
+            }
+            
+            const allDataElement = document.getElementById('allData');
+            allDataElement.textContent = JSON.stringify(allData, null, 2);
+        }
+        
+        // 添加測試商品
+        function addTestProduct() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const testProduct = {
+                id: Date.now(),
+                name: '測試商品',
+                description: '這是一個測試商品',
+                price: 9999,
+                quantity: 1,
+                image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
+            };
+            
+            cart.push(testProduct);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            
+            alert('測試商品已添加到購物車');
+            refreshData();
+        }
+        
+        // 清空購物車
+        function clearCart() {
+            localStorage.removeItem('cart');
+            alert('購物車已清空');
+            refreshData();
+        }
+        
+        // 清空所有數據
+        function clearAllData() {
+            if (confirm('確定要清空所有數據嗎？這將刪除購物車、願望清單等所有數據。')) {
+                localStorage.clear();
+                alert('所有數據已清空');
+                refreshData();
+            }
+        }
+        
+        // 重新載入數據
+        function refreshData() {
+            loadCartData();
+            loadWishlistData();
+            loadAllData();
+        }
+        
+        // 頁面載入時初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            refreshData();
+        });
+        
+        // 監聽localStorage變化
+        window.addEventListener('storage', function(e) {
+            console.log('localStorage變化:', e.key, e.newValue);
+            refreshData();
+        });
+    </script>
+</body>
+</html> 

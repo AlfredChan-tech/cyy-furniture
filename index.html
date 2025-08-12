@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYY - 奢華家具典藏</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="fonts-loading">
+    <!-- 頂部導航欄 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="index.html" class="home-btn">
+                    <i class="fas fa-home"></i>
+                </a>
+                <div class="hamburger-menu">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+            
+            <div class="nav-center">
+                <div class="logo">
+                    <h1>CYY</h1>
+                </div>
+            </div>
+            
+            <div class="nav-right">
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="搜索家具...">
+                    <i class="fas fa-search search-icon"></i>
+                </div>
+                <div class="nav-icons">
+                    <a href="#" class="nav-icon" id="userIcon">
+                        <i class="fas fa-user"></i>
+                    </a>
+                    <a href="wishlist.html" class="nav-icon" id="wishlistIcon">
+                        <i class="fas fa-heart"></i>
+                    </a>
+                    <a href="cart.html" class="nav-icon" id="cartIcon">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span class="cart-count">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 隱藏的導航菜單 -->
+        <div class="nav-menu-overlay">
+            <div class="nav-menu-container">
+                <div class="nav-menu-header">
+                    <h2>選單</h2>
+                    <button class="close-menu">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">客廳家具</a>
+                        <ul class="sub-menu">
+                            <li><a href="#">沙發</a></li>
+                            <li><a href="#">茶几</a></li>
+                            <li><a href="#">電視櫃</a></li>
+                            <li><a href="#">書櫃</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">臥室家具</a>
+                        <ul class="sub-menu">
+                            <li><a href="#">床架</a></li>
+                            <li><a href="#">衣櫃</a></li>
+                            <li><a href="#">梳妝台</a></li>
+                            <li><a href="#">床頭櫃</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">餐廳家具</a>
+                        <ul class="sub-menu">
+                            <li><a href="#">餐桌</a></li>
+                            <li><a href="#">餐椅</a></li>
+                            <li><a href="#">餐邊櫃</a></li>
+                            <li><a href="#">酒櫃</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">新品推薦</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">限時優惠</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要輪播圖 -->
+    <section class="hero-carousel">
+        <div class="carousel-container">
+            <div class="carousel-slide active">
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <h2>限時優惠 驚喜價格</h2>
+                        <p>CYY家具限時折扣，為您的家添購品質家具</p>
+                        <a href="#" class="cta-button">搶購優惠</a>
+                    </div>
+                    <div class="slide-image">
+                        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="限時優惠">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="carousel-slide">
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <h2>精工品質 雅致生活</h2>
+                        <p>探索我們全新的現代家具系列，為您的居家空間帶來優雅與舒適</p>
+                        <a href="#" class="cta-button">立即探索</a>
+                    </div>
+                    <div class="slide-image">
+                        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="現代客廳家具">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="carousel-slide">
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <h2>臥室典藏 舒適夢境</h2>
+                        <p>精選優質臥室家具，打造您的私人休憩空間</p>
+                        <a href="#" class="cta-button">查看更多</a>
+                    </div>
+                    <div class="slide-image">
+                        <img src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="臥室家具">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="carousel-controls">
+            <button class="carousel-btn prev-btn">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="carousel-btn next-btn">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+        
+        <div class="carousel-indicators">
+            <span class="indicator active" data-slide="0"></span>
+            <span class="indicator" data-slide="1"></span>
+            <span class="indicator" data-slide="2"></span>
+        </div>
+    </section>
+
+    <!-- 產品分類區域 -->
+    <section class="product-categories">
+        <div class="container">
+            <h2 class="section-title">探索我們的家具系列</h2>
+            <div class="categories-grid">
+                <div class="category-card">
+                    <div class="category-image">
+                        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="客廳家具">
+                        <div class="category-overlay">
+                            <h3>客廳家具</h3>
+                            <p>現代簡約風格</p>
+                            <a href="#" class="category-btn">探索更多</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="category-card">
+                    <div class="category-image">
+                        <img src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="臥室家具">
+                        <div class="category-overlay">
+                            <h3>臥室家具</h3>
+                            <p>溫馨舒適空間</p>
+                            <a href="#" class="category-btn">探索更多</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="category-card">
+                    <div class="category-image">
+                        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="餐廳家具">
+                        <div class="category-overlay">
+                            <h3>餐廳家具</h3>
+                            <p>優雅用餐體驗</p>
+                            <a href="#" class="category-btn">探索更多</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="category-card">
+                    <div class="category-image">
+                        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="辦公家具">
+                        <div class="category-overlay">
+                            <h3>辦公家具</h3>
+                            <p>高效工作環境</p>
+                            <a href="#" class="category-btn">探索更多</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 熱門產品展示 -->
+    <section class="featured-products">
+        <div class="container">
+            <h2 class="section-title">熱門推薦</h2>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="現代沙發">
+                        <div class="product-overlay">
+                            <button class="wishlist-btn">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            <button class="quick-view-btn">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">現代簡約沙發</h3>
+                        <p class="product-description">舒適的三人座沙發，適合現代家居風格</p>
+                        <div class="product-price">
+                            <span class="current-price">NT$ 35,800</span>
+                            <span class="original-price">NT$ 42,000</span>
+                        </div>
+                        <button class="add-to-cart-btn">加入購物車</button>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="實木床架">
+                        <div class="product-overlay">
+                            <button class="wishlist-btn">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            <button class="quick-view-btn">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">實木雙人床架</h3>
+                        <p class="product-description">精選實木製作，堅固耐用的雙人床架</p>
+                        <div class="product-price">
+                            <span class="current-price">NT$ 28,500</span>
+                        </div>
+                        <button class="add-to-cart-btn">加入購物車</button>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="橡木餐桌">
+                        <div class="product-overlay">
+                            <button class="wishlist-btn">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            <button class="quick-view-btn">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">橡木餐桌</h3>
+                        <p class="product-description">天然橡木材質，六人座餐桌</p>
+                        <div class="product-price">
+                            <span class="current-price">NT$ 45,200</span>
+                        </div>
+                        <button class="add-to-cart-btn">加入購物車</button>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="現代書櫃">
+                        <div class="product-overlay">
+                            <button class="wishlist-btn">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            <button class="quick-view-btn">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">現代書櫃</h3>
+                        <p class="product-description">多層收納設計，適合客廳或書房</p>
+                        <div class="product-price">
+                            <span class="current-price">NT$ 15,800</span>
+                        </div>
+                        <button class="add-to-cart-btn">加入購物車</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 品牌故事區域 -->
+    <section class="brand-story">
+        <div class="container">
+            <div class="story-content">
+                <div class="story-text">
+                    <h2>CYY 品牌故事</h2>
+                    <p>自1985年創立以來，CYY秉承著對品質的堅持與對美學的追求，致力於為每一個家庭創造舒適優雅的生活空間。我們精選世界各地的優質材料，結合精湛的工藝技術，打造出既實用又美觀的家具產品。</p>
+                    <p>每一件家具都經過嚴格的品質檢驗，確保為您提供最好的居家體驗。我們相信，好的家具不僅是實用的工具，更是生活品味的體現。</p>
+                    <a href="#" class="learn-more-btn">了解更多</a>
+                </div>
+                <div class="story-image">
+                    <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="品牌故事">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 客戶評價 -->
+    <section class="testimonials">
+        <div class="container">
+            <h2 class="section-title">客戶評價</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p>"品質非常好，設計也很時尚，完全超出我的期待！"</p>
+                        <div class="customer-info">
+                            <h4>張小姐</h4>
+                            <span>台北市</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p>"服務很好，送貨準時，家具品質也很棒！"</p>
+                        <div class="customer-info">
+                            <h4>林先生</h4>
+                            <span>台中市</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p>"整個購買過程都很順利，推薦給大家！"</p>
+                        <div class="customer-info">
+                            <h4>王太太</h4>
+                            <span>高雄市</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 底部區域 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>CYY</h3>
+                    <p>致力於為您打造優雅舒適的居家環境</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-line"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>產品分類</h4>
+                    <ul>
+                        <li><a href="#">客廳家具</a></li>
+                        <li><a href="#">臥室家具</a></li>
+                        <li><a href="#">餐廳家具</a></li>
+                        <li><a href="#">辦公家具</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>客戶服務</h4>
+                    <ul>
+                        <li><a href="#">聯絡我們</a></li>
+                        <li><a href="#">配送資訊</a></li>
+                        <li><a href="#">退換貨政策</a></li>
+                        <li><a href="#">常見問題</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>聯絡資訊</h4>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> 02-1234-5678</li>
+                        <li><i class="fas fa-envelope"></i> info@cyy.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 台北市信義區松仁路100號</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 CYY. 版權所有</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 快速查看模態框 -->
+    <div id="quickViewModal" class="quick-view-modal">
+        <div class="quick-view-content">
+            <span class="close-quick-view">&times;</span>
+            <div class="quick-view-body">
+                <div class="quick-view-image">
+                    <img id="quickViewImage" src="" alt="">
+                </div>
+                <div class="quick-view-details">
+                    <h3 id="quickViewTitle"></h3>
+                    <p id="quickViewDescription"></p>
+                    <div class="quick-view-price">
+                        <span class="current-price" id="quickViewPrice"></span>
+                        <span class="original-price" id="quickViewOriginalPrice"></span>
+                    </div>
+                    <div class="quick-view-actions">
+                        <button id="quickViewAddToCart" class="quick-add-to-cart-btn">加入購物車</button>
+                        <button id="quickViewWishlist" class="quick-wishlist-btn">
+                            <i class="far fa-heart"></i>
+                        </button>
+                        <button id="quickViewDetails" class="quick-details-btn">查看詳細</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 登入註冊彈出視窗 -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="auth-tabs">
+                <button class="tab-btn active" data-tab="login">登入</button>
+                <button class="tab-btn" data-tab="register">註冊</button>
+            </div>
+            
+            <div id="loginTab" class="tab-content active">
+                <h3>會員登入</h3>
+                <form class="auth-form">
+                    <div class="form-group">
+                        <input type="email" placeholder="電子郵件" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" placeholder="密碼" required>
+                    </div>
+                    <button type="submit" class="auth-btn">登入</button>
+                    <div class="auth-divider">
+                        <span>或</span>
+                    </div>
+                    <div class="social-login">
+                        <button class="social-btn facebook">
+                            <i class="fab fa-facebook"></i> Facebook登入
+                        </button>
+                        <button class="social-btn google">
+                            <i class="fab fa-google"></i> Google登入
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <div id="registerTab" class="tab-content">
+                <h3>會員註冊</h3>
+                <form class="auth-form">
+                    <div class="form-group">
+                        <input type="text" placeholder="姓名" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="電子郵件" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" placeholder="手機號碼" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" placeholder="密碼" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" placeholder="確認密碼" required>
+                    </div>
+                    <button type="submit" class="auth-btn">註冊</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    
+    <!-- 字體載入優化 -->
+    <script>
+        // 檢查字體載入狀態
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(() => {
+                document.body.classList.remove('fonts-loading');
+                document.body.classList.add('fonts-loaded');
+            });
+        } else {
+            // 備用方案：延遲顯示
+            setTimeout(() => {
+                document.body.classList.remove('fonts-loading');
+                document.body.classList.add('fonts-loaded');
+            }, 100);
+        }
+    </script>
+
+    <!-- API模塊 -->
+    <script src="api.js"></script>
+</body>
+</html> 

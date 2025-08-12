@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>購物車 - CYY</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="cart.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="fonts-loading">
+    <!-- 頂部導航欄 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="index.html" class="home-btn">
+                    <i class="fas fa-home"></i>
+                </a>
+                <div class="hamburger-menu">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+            
+            <div class="nav-center">
+                <div class="logo">
+                    <h1>CYY</h1>
+                </div>
+            </div>
+            
+            <div class="nav-right">
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="搜索家具...">
+                    <i class="fas fa-search search-icon"></i>
+                </div>
+                <div class="nav-icons">
+                    <a href="#" class="nav-icon">
+                        <i class="fas fa-user"></i>
+                    </a>
+                    <a href="#" class="nav-icon">
+                        <i class="fas fa-heart"></i>
+                    </a>
+                    <a href="#" class="nav-icon">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span class="cart-count">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 隱藏的導航菜單 -->
+        <div class="nav-menu-overlay">
+            <div class="nav-menu-container">
+                <div class="nav-menu-header">
+                    <h2>選單</h2>
+                    <button class="close-menu">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">客廳家具</a>
+                        <ul class="sub-menu">
+                            <li><a href="#">沙發</a></li>
+                            <li><a href="#">茶几</a></li>
+                            <li><a href="#">電視櫃</a></li>
+                            <li><a href="#">書櫃</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">臥室家具</a>
+                        <ul class="sub-menu">
+                            <li><a href="#">床架</a></li>
+                            <li><a href="#">衣櫃</a></li>
+                            <li><a href="#">梳妝台</a></li>
+                            <li><a href="#">床頭櫃</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">餐廳家具</a>
+                        <ul class="sub-menu">
+                            <li><a href="#">餐桌</a></li>
+                            <li><a href="#">餐椅</a></li>
+                            <li><a href="#">餐邊櫃</a></li>
+                            <li><a href="#">酒櫃</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">新品推薦</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">限時優惠</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 麵包屑導航 -->
+    <div class="breadcrumb">
+        <div class="container">
+            <nav class="breadcrumb-nav">
+                <a href="index.html">首頁</a>
+                <span>/</span>
+                <span>購物車</span>
+            </nav>
+        </div>
+    </div>
+
+    <!-- 購物車主要內容 -->
+    <main class="cart-page">
+        <div class="container">
+            <div class="cart-header">
+                <h1>我的購物車</h1>
+                <div class="cart-progress">
+                    <div class="progress-step active">
+                        <div class="step-number">1</div>
+                        <div class="step-label">購物車</div>
+                    </div>
+                    <div class="progress-line"></div>
+                    <div class="progress-step">
+                        <div class="step-number">2</div>
+                        <div class="step-label">配送信息</div>
+                    </div>
+                    <div class="progress-line"></div>
+                    <div class="progress-step">
+                        <div class="step-number">3</div>
+                        <div class="step-label">付款方式</div>
+                    </div>
+                    <div class="progress-line"></div>
+                    <div class="progress-step">
+                        <div class="step-number">4</div>
+                        <div class="step-label">完成訂單</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cart-content">
+                <!-- 購物車商品列表 -->
+                <div class="cart-items">
+                    <div class="cart-table-header">
+                        <div class="header-cell select-all">
+                            <input type="checkbox" id="selectAll">
+                            <label for="selectAll">全選</label>
+                        </div>
+                        <div class="header-cell product-info">商品信息</div>
+                        <div class="header-cell unit-price">單價</div>
+                        <div class="header-cell quantity">數量</div>
+                        <div class="header-cell subtotal">小計</div>
+                        <div class="header-cell actions">
+                            <button class="batch-delete-btn" style="display: none;" title="刪除選中商品">
+                                <i class="fas fa-trash"></i> 刪除選中
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="cart-items-container">
+                        <!-- 購物車商品將通過JavaScript動態生成 -->
+                    </div>
+
+                    <!-- 空購物車狀態 -->
+                    <div class="empty-cart" style="display: none;">
+                        <div class="empty-cart-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <h3>您的購物車是空的</h3>
+                        <p>快去挑選心儀的家具吧！</p>
+                        <a href="index.html" class="btn-primary">繼續購物</a>
+                    </div>
+                </div>
+
+                <!-- 購物車側邊欄 -->
+                <div class="cart-sidebar">
+                    <div class="cart-summary">
+                        <h3>訂單摘要</h3>
+                        
+                        <div class="summary-row">
+                            <span>商品總價</span>
+                            <span class="subtotal-amount">NT$ 0</span>
+                        </div>
+                        
+                        <div class="summary-row">
+                            <span>運費</span>
+                            <span class="shipping-fee">免運費</span>
+                        </div>
+                        
+                        <div class="summary-row discount-row">
+                            <span>優惠折扣</span>
+                            <span class="discount-amount">-NT$ 0</span>
+                        </div>
+                        
+                        <div class="summary-divider"></div>
+                        
+                        <div class="summary-row total-row">
+                            <span>總計</span>
+                            <span class="total-amount">NT$ 0</span>
+                        </div>
+                        
+                        <div class="cart-actions">
+                            <button class="btn-secondary continue-shopping">繼續購物</button>
+                            <button class="btn-primary checkout-btn">結帳</button>
+                        </div>
+                    </div>
+                    
+                    <!-- 優惠券區域 -->
+                    <div class="coupon-section">
+                        <h4>優惠券</h4>
+                        <div class="coupon-input">
+                            <input type="text" placeholder="請輸入優惠券代碼" class="coupon-code">
+                            <button class="apply-coupon">使用</button>
+                        </div>
+                        <div class="available-coupons">
+                            <div class="coupon-item">
+                                <div class="coupon-info">
+                                    <div class="coupon-title">新用戶專享</div>
+                                    <div class="coupon-desc">滿NT$ 30,000 折NT$ 3,000</div>
+                                </div>
+                                <button class="use-coupon">使用</button>
+                            </div>
+                            <div class="coupon-item">
+                                <div class="coupon-info">
+                                    <div class="coupon-title">限時優惠</div>
+                                    <div class="coupon-desc">滿NT$ 50,000 折NT$ 5,000</div>
+                                </div>
+                                <button class="use-coupon">使用</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 推薦商品 -->
+                    <div class="recommended-items">
+                        <h4>推薦商品</h4>
+                        <div class="recommended-products">
+                            <div class="recommended-item">
+                                <img src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="推薦商品">
+                                <div class="item-info">
+                                    <h5>實木茶几</h5>
+                                    <div class="item-price">NT$ 12,800</div>
+                                </div>
+                                <button class="add-recommended">加入購物車</button>
+                            </div>
+                            <div class="recommended-item">
+                                <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="推薦商品">
+                                <div class="item-info">
+                                    <h5>現代地毯</h5>
+                                    <div class="item-price">NT$ 6,800</div>
+                                </div>
+                                <button class="add-recommended">加入購物車</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 刪除確認模態框 -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>確認刪除</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>確定要從購物車中刪除這個商品嗎？</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary cancel-delete">取消</button>
+                <button class="btn-primary confirm-delete">確認刪除</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部區域 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>CYY</h3>
+                    <p>致力於為您打造優雅舒適的居家環境</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-line"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>產品分類</h4>
+                    <ul>
+                        <li><a href="#">客廳家具</a></li>
+                        <li><a href="#">臥室家具</a></li>
+                        <li><a href="#">餐廳家具</a></li>
+                        <li><a href="#">辦公家具</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>客戶服務</h4>
+                    <ul>
+                        <li><a href="#">聯絡我們</a></li>
+                        <li><a href="#">配送資訊</a></li>
+                        <li><a href="#">退換貨政策</a></li>
+                        <li><a href="#">常見問題</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>聯絡資訊</h4>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> 02-1234-5678</li>
+                        <li><i class="fas fa-envelope"></i> info@cyy.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 台北市信義區松仁路100號</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 CYY. 版權所有</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="cart.js"></script>
+    <script src="script.js"></script>
+    
+    <!-- 字體載入優化 -->
+    <script>
+        // 檢查字體載入狀態
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(() => {
+                document.body.classList.remove('fonts-loading');
+                document.body.classList.add('fonts-loaded');
+            });
+        } else {
+            // 備用方案：延遲顯示
+            setTimeout(() => {
+                document.body.classList.remove('fonts-loading');
+                document.body.classList.add('fonts-loaded');
+            }, 100);
+        }
+    </script>
+    
+    <!-- 調試腳本 -->
+    <script>
+        // 頁面載入後額外檢查
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                console.log('=== 購物車頁面調試 ===');
+                const container = document.querySelector('.cart-items-container');
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                
+                console.log('容器元素:', container);
+                console.log('容器HTML長度:', container ? container.innerHTML.length : '容器不存在');
+                console.log('容器樣式顯示:', container ? getComputedStyle(container).display : '無');
+                console.log('容器可見性:', container ? getComputedStyle(container).visibility : '無');
+                console.log('購物車數據:', cart);
+                
+                // 如果有數據但容器為空，強制重新渲染
+                if (cart.length > 0 && container && container.innerHTML.trim() === '') {
+                    console.log('檢測到數據不同步，強制重新初始化...');
+                    if (typeof initCart === 'function') {
+                        initCart();
+                    }
+                }
+            }, 2000);
+        });
+    </script>
+</body>
+</html> 

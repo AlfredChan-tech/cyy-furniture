@@ -1,0 +1,1454 @@
+/* 基本重置和全局樣式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    color: #2c2c2c;
+    background-color: #ffffff;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* 頂部導航欄 */
+.navbar {
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.nav-container {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+    height: 80px;
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    justify-self: start;
+    gap: 15px;
+}
+
+.home-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    color: #2c2c2c;
+    text-decoration: none;
+    font-size: 16px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.home-btn:hover {
+    color: #8b7355;
+    border-color: #8b7355;
+    background-color: rgba(139, 115, 85, 0.05);
+}
+
+.home-btn i {
+    font-size: 16px;
+}
+
+.hamburger-menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    font-size: 18px;
+    color: #2c2c2c;
+    transition: color 0.3s ease;
+    border: 1px solid transparent;
+    border-radius: 2px;
+}
+
+.hamburger-menu:hover {
+    color: #8b7355;
+    border-color: #8b7355;
+}
+
+.nav-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 400;
+    color: #2c2c2c;
+    letter-spacing: 2px;
+    margin: 0;
+    width: 60px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-display: swap;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* 防止字體載入跳動 */
+.logo {
+    min-width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 防止初始載入時的跳動 */
+.fonts-loading .logo h1 {
+    visibility: hidden;
+}
+
+.fonts-loaded .logo h1 {
+    visibility: visible;
+}
+
+/* 隱藏的導航菜單樣式 */
+.nav-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.nav-menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.nav-menu-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 400px;
+    height: 100%;
+    background-color: #ffffff;
+    padding: 40px;
+    box-shadow: 2px 0 20px rgba(0, 0, 0, 0.1);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+}
+
+.nav-menu-overlay.active .nav-menu-container {
+    transform: translateX(0);
+}
+
+.nav-menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.nav-menu-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 400;
+    color: #2c2c2c;
+    margin: 0;
+    letter-spacing: 1px;
+}
+
+.close-menu {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #2c2c2c;
+    cursor: pointer;
+    padding: 5px;
+    transition: color 0.3s ease;
+}
+
+.close-menu:hover {
+    color: #8b7355;
+}
+
+.nav-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-item {
+    margin-bottom: 25px;
+}
+
+.nav-link {
+    display: block;
+    text-decoration: none;
+    color: #2c2c2c;
+    font-weight: 400;
+    font-size: 16px;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
+    text-transform: uppercase;
+    padding: 10px 0;
+    border-bottom: 1px solid transparent;
+}
+
+.nav-link:hover {
+    color: #8b7355;
+    border-bottom-color: #8b7355;
+}
+
+.sub-menu {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0 0 20px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.nav-item:hover .sub-menu {
+    max-height: 200px;
+}
+
+.sub-menu li {
+    margin-bottom: 8px;
+}
+
+.sub-menu a {
+    display: block;
+    text-decoration: none;
+    color: #666;
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    transition: color 0.3s ease;
+    padding: 5px 0;
+    text-transform: none;
+}
+
+.sub-menu a:hover {
+    color: #8b7355;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    justify-self: end;
+}
+
+.search-container {
+    position: relative;
+}
+
+.search-input {
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 8px 40px 8px 15px;
+    font-size: 13px;
+    width: 200px;
+    transition: border-color 0.3s ease;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #8b7355;
+}
+
+.search-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    cursor: pointer;
+}
+
+.nav-icons {
+    display: flex;
+    gap: 15px;
+}
+
+.nav-icon {
+    color: #333;
+    font-size: 16px;
+    text-decoration: none;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.nav-icon:hover {
+    color: #8b7355;
+}
+
+.cart-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #8b7355;
+    color: white;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+/* 主要輪播圖 */
+.hero-carousel {
+    position: relative;
+    height: 80vh;
+    overflow: hidden;
+    margin-top: 80px;
+}
+
+.carousel-container {
+    position: relative;
+    height: 100%;
+}
+
+.carousel-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
+
+.carousel-slide.active {
+    opacity: 1;
+}
+
+.slide-content {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    background: linear-gradient(135deg, #fafafa 0%, #f0f0f0 100%);
+    padding: 0 60px;
+}
+
+.slide-text {
+    flex: 1;
+    max-width: 600px;
+    padding-right: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 300px;
+}
+
+.slide-text h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 52px;
+    font-weight: 400;
+    color: #2c2c2c;
+    margin-bottom: 30px;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+}
+
+.slide-text p {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 45px;
+    line-height: 1.6;
+    font-weight: 300;
+}
+
+.cta-button {
+    display: inline-block;
+    background-color: #2c2c2c;
+    color: white;
+    padding: 16px 32px;
+    text-decoration: none;
+    border: none;
+    font-weight: 400;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-size: 11px;
+    border-radius: 0;
+    margin-top: 10px;
+    min-width: 150px;
+    text-align: center;
+}
+
+.cta-button:hover {
+    background-color: #8b7355;
+    transform: translateY(-1px);
+}
+
+.slide-image {
+    flex: 1.2;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 60px 60px 20px;
+}
+
+.slide-image img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    border-radius: 0;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+}
+
+.carousel-controls {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.carousel-btn {
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-btn:hover {
+    background-color: #8b7355;
+    color: white;
+    transform: scale(1.1);
+}
+
+.carousel-indicators {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+}
+
+.indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.indicator.active {
+    background-color: #8b7355;
+}
+
+/* 產品分類區域 */
+.product-categories {
+    padding: 100px 0;
+    background-color: #ffffff;
+}
+
+.section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 40px;
+    font-weight: 400;
+    text-align: center;
+    margin-bottom: 60px;
+    color: #2c2c2c;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.category-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+}
+
+.category-image {
+    position: relative;
+    height: 350px;
+    overflow: hidden;
+}
+
+.category-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.category-card:hover .category-image img {
+    transform: scale(1.05);
+}
+
+.category-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.category-card:hover .category-overlay {
+    opacity: 1;
+}
+
+.category-overlay h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 400;
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
+}
+
+.category-overlay p {
+    font-size: 16px;
+    margin-bottom: 24px;
+    opacity: 0.9;
+    font-weight: 300;
+}
+
+.category-btn {
+    background-color: transparent;
+    border: 1px solid white;
+    color: white;
+    padding: 12px 24px;
+    text-decoration: none;
+    border-radius: 0;
+    font-weight: 400;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-size: 10px;
+}
+
+.category-btn:hover {
+    background-color: white;
+    color: #2c2c2c;
+}
+
+/* 熱門產品展示 */
+.featured-products {
+    padding: 100px 0;
+    background-color: #f9f9f9;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.product-card {
+    background-color: white;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.product-image {
+    position: relative;
+    height: 250px;
+    overflow: hidden;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-image img {
+    transform: scale(1.05);
+}
+
+.product-overlay {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.product-card:hover .product-overlay {
+    opacity: 1;
+}
+
+.wishlist-btn,
+.quick-view-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+.wishlist-btn:hover,
+.quick-view-btn:hover {
+    background-color: #8b7355;
+    color: white;
+    transform: scale(1.1);
+}
+
+.product-info {
+    padding: 25px;
+}
+
+.product-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.product-description {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.product-price {
+    margin-bottom: 20px;
+}
+
+.current-price {
+    font-size: 18px;
+    font-weight: 600;
+    color: #8b7355;
+}
+
+.original-price {
+    font-size: 14px;
+    color: #999;
+    text-decoration: line-through;
+    margin-left: 10px;
+}
+
+.add-to-cart-btn {
+    width: 100%;
+    background-color: #8b7355;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 2px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+.add-to-cart-btn:hover {
+    background-color: #705d47;
+    transform: translateY(-2px);
+}
+
+/* 品牌故事區域 */
+.brand-story {
+    padding: 100px 0;
+    background-color: #ffffff;
+}
+
+.story-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.story-text h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 25px;
+}
+
+.story-text p {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 20px;
+    line-height: 1.7;
+}
+
+.learn-more-btn {
+    display: inline-block;
+    background-color: transparent;
+    color: #8b7355;
+    border: 2px solid #8b7355;
+    padding: 12px 25px;
+    text-decoration: none;
+    border-radius: 2px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+.learn-more-btn:hover {
+    background-color: #8b7355;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.story-image img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 4px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* 客戶評價 */
+.testimonials {
+    padding: 100px 0;
+    background-color: #f9f9f9;
+}
+
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.testimonial-card {
+    background-color: white;
+    padding: 30px;
+    border-radius: 4px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-5px);
+}
+
+.stars {
+    color: #f39c12;
+    margin-bottom: 15px;
+}
+
+.testimonial-content p {
+    font-size: 16px;
+    color: #666;
+    font-style: italic;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.customer-info h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.customer-info span {
+    font-size: 14px;
+    color: #999;
+}
+
+/* 底部區域 */
+.footer {
+    background-color: #333;
+    color: white;
+    padding: 60px 0 20px;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.footer-section h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #8b7355;
+}
+
+.footer-section h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.footer-section p {
+    color: #ccc;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.footer-section ul {
+    list-style: none;
+}
+
+.footer-section ul li {
+    margin-bottom: 10px;
+}
+
+.footer-section ul li a {
+    color: #ccc;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+    color: #8b7355;
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.social-links a {
+    width: 40px;
+    height: 40px;
+    background-color: #444;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+    background-color: #8b7355;
+    transform: translateY(-2px);
+}
+
+.footer-bottom {
+    border-top: 1px solid #444;
+    padding-top: 20px;
+    text-align: center;
+    color: #ccc;
+}
+
+/* 快速查看模態框 */
+.quick-view-modal {
+    display: none;
+    position: fixed;
+    z-index: 3000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.quick-view-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 0;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 800px;
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    animation: slideIn 0.3s ease-out;
+}
+
+.close-quick-view {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    cursor: pointer;
+    color: #666;
+    z-index: 1;
+    transition: color 0.3s ease;
+}
+
+.close-quick-view:hover {
+    color: #333;
+}
+
+.quick-view-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    padding: 40px;
+}
+
+.quick-view-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.quick-view-image img {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.quick-view-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+}
+
+.quick-view-details h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+
+.quick-view-details p {
+    font-size: 16px;
+    color: #666;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.quick-view-price {
+    margin: 10px 0;
+}
+
+.quick-view-price .current-price {
+    font-size: 24px;
+    font-weight: 600;
+    color: #8b7355;
+}
+
+.quick-view-price .original-price {
+    font-size: 18px;
+    color: #999;
+    text-decoration: line-through;
+    margin-left: 15px;
+}
+
+.quick-view-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.quick-add-to-cart-btn {
+    flex: 1;
+    background-color: #8b7355;
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 4px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+.quick-add-to-cart-btn:hover {
+    background-color: #705d47;
+    transform: translateY(-2px);
+}
+
+.quick-wishlist-btn {
+    width: 50px;
+    height: 50px;
+    border: 2px solid #8b7355;
+    background-color: white;
+    color: #8b7355;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 18px;
+}
+
+.quick-wishlist-btn:hover {
+    background-color: #8b7355;
+    color: white;
+}
+
+.quick-wishlist-btn.active {
+    background-color: #e74c3c;
+    border-color: #e74c3c;
+    color: white;
+}
+
+.quick-details-btn {
+    background-color: transparent;
+    color: #8b7355;
+    border: 2px solid #8b7355;
+    padding: 15px 25px;
+    border-radius: 4px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+.quick-details-btn:hover {
+    background-color: #8b7355;
+    color: white;
+}
+
+/* 模態框 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 0;
+    border-radius: 4px;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+    z-index: 1;
+}
+
+.close:hover {
+    color: #333;
+}
+
+.auth-tabs {
+    display: flex;
+    border-bottom: 1px solid #eee;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 15px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: #666;
+    transition: all 0.3s ease;
+}
+
+.tab-btn.active {
+    color: #8b7355;
+    border-bottom: 2px solid #8b7355;
+}
+
+.tab-content {
+    display: none;
+    padding: 30px;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.tab-content h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 25px;
+    text-align: center;
+    color: #333;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #8b7355;
+}
+
+.auth-btn {
+    background-color: #8b7355;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+}
+
+.auth-btn:hover {
+    background-color: #705d47;
+}
+
+.auth-divider {
+    text-align: center;
+    position: relative;
+    margin: 20px 0;
+}
+
+.auth-divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: #eee;
+}
+
+.auth-divider span {
+    background-color: white;
+    padding: 0 15px;
+    color: #666;
+    font-size: 12px;
+}
+
+.social-login {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 13px;
+}
+
+.social-btn:hover {
+    background-color: #f8f8f8;
+}
+
+.social-btn.facebook {
+    color: #1877f2;
+}
+
+.social-btn.google {
+    color: #db4437;
+}
+
+/* 字體載入優化 */
+@font-face {
+    font-family: 'Playfair Display';
+    font-display: swap;
+}
+
+/* 防止頁面載入時跳動 */
+.navbar {
+    min-height: 80px;
+}
+
+.nav-container {
+    min-height: 80px;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .nav-container {
+        padding: 0 20px;
+    }
+    
+    .logo h1 {
+        font-size: 24px;
+        letter-spacing: 1px;
+    }
+    
+    .nav-menu-container {
+        width: 320px;
+        padding: 30px 20px;
+    }
+    
+    .search-container {
+        display: none;
+    }
+    
+    .home-btn i {
+        font-size: 18px;
+    }
+    
+    .slide-content {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+        gap: 20px;
+    }
+    
+    .slide-text {
+        padding-right: 0;
+        min-height: 250px;
+    }
+    
+    .slide-text h2 {
+        font-size: 32px;
+        margin-bottom: 20px;
+    }
+    
+    .slide-text p {
+        font-size: 16px;
+        margin-bottom: 25px;
+    }
+    
+    .story-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .categories-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .products-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+    
+    .testimonials-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    /* 快速查看模態框響應式 */
+    .quick-view-content {
+        width: 95%;
+        margin: 2% auto;
+    }
+    
+    .quick-view-body {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 20px;
+    }
+    
+    .quick-view-image img {
+        height: 250px;
+    }
+    
+    .quick-view-details h3 {
+        font-size: 24px;
+    }
+    
+    .quick-view-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .quick-wishlist-btn {
+        width: 100%;
+        height: 45px;
+    }
+}
+
+@media (max-width: 480px) {
+    .section-title {
+        font-size: 28px;
+    }
+    
+    .slide-text {
+        min-height: 200px;
+    }
+    
+    .slide-text h2 {
+        font-size: 24px;
+        margin-bottom: 15px;
+    }
+    
+    .slide-text p {
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+    
+    .cta-button {
+        padding: 12px 24px;
+        font-size: 10px;
+        margin-top: 5px;
+    }
+    
+    .hero-carousel {
+        height: 50vh;
+    }
+    
+    .product-card {
+        margin-bottom: 20px;
+    }
+    
+    .nav-menu-container {
+        width: 280px;
+        padding: 20px 15px;
+    }
+    
+    .nav-menu-header h2 {
+        font-size: 20px;
+    }
+    
+    .nav-link {
+        font-size: 14px;
+    }
+}
+
+/* 額外的動畫效果 */
+.nav-menu-container {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* 改善觸摸設備體驗 */
+@media (hover: none) {
+    .nav-item:hover .sub-menu {
+        max-height: none;
+    }
+    
+    .nav-item .sub-menu {
+        max-height: 200px;
+    }
+} 

@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  # 主應用服務
+  cyy-app:
+    build: .
+    ports:
+      - "80:80"      # 前端
+      - "8080:8080"  # 後端API
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/cyy_furniture
+      - SPRING_DATASOURCE_USERNAME=cyy_user
+      - SPRING_DATASOURCE_PASSWORD=cyy_password
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - uploads:/app/uploads
+    networks:
+      - cyy-network
+
+  # MySQL數據庫
+  mysql:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_password
+      - MYSQL_DATABASE=cyy_furniture
+      - MYSQL_USER=cyy_user
+      - MYSQL_PASSWORD=cyy_password
+      - MYSQL_CHARACTER_SET_SERVER=utf8mb4
+      - MYSQL_COLLATION_SERVER=utf8mb4_unicode_ci
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./backend/src/main/resources/data.sql:/docker-entrypoint-initdb.d/data.sql
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    networks:
+      - cyy-network
+
+  # Redis緩存
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - cyy-network
+
+  # 管理員面板
+  cyy-admin:
+    build:
+      context: .
+      dockerfile: Dockerfile.admin
+    ports:
+      - "3000:80"
+    volumes:
+      - ./admin:/usr/share/nginx/html
+    networks:
+      - cyy-network
+
+volumes:
+  mysql_data:
+  redis_data:
+  uploads:
+
+networks:
+  cyy-network:
+    driver: bridge

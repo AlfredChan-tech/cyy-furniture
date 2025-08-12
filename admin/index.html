@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYY家具 - 管理員後台</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/admin-style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- 側邊欄 -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h4 class="text-white">CYY管理後台</h4>
+            </div>
+            <ul class="sidebar-nav">
+                <li class="nav-item">
+                    <a href="#dashboard" class="nav-link active" data-page="dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>儀表板</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#products" class="nav-link" data-page="products">
+                        <i class="fas fa-box"></i>
+                        <span>產品管理</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#categories" class="nav-link" data-page="categories">
+                        <i class="fas fa-tags"></i>
+                        <span>分類管理</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#orders" class="nav-link" data-page="orders">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>訂單管理</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#users" class="nav-link" data-page="users">
+                        <i class="fas fa-users"></i>
+                        <span>用戶管理</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#statistics" class="nav-link" data-page="statistics">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>統計報表</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#settings" class="nav-link" data-page="settings">
+                        <i class="fas fa-cog"></i>
+                        <span>系統設定</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- 主要內容區域 -->
+        <div class="main-content">
+            <!-- 頂部導航 -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
+                <div class="container-fluid">
+                    <button class="btn btn-link sidebar-toggle" id="sidebarToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    
+                    <div class="navbar-nav ms-auto">
+                        <div class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user-circle"></i>
+                                <span class="ms-2">管理員</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="#profile"><i class="fas fa-user"></i> 個人資料</a></li>
+                                <li><a class="dropdown-item" href="#settings"><i class="fas fa-cog"></i> 設定</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#logout"><i class="fas fa-sign-out-alt"></i> 登出</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- 頁面內容 -->
+            <div class="content-wrapper">
+                <div class="container-fluid">
+                    <!-- 儀表板頁面 -->
+                    <div id="dashboard-page" class="page-content active">
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h1 class="h3 mb-0 text-gray-800">儀表板</h1>
+                                <p class="text-muted">歡迎來到CYY家具管理後台</p>
+                            </div>
+                        </div>
+
+                        <!-- 統計卡片 -->
+                        <div class="row mb-4">
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card stats-card stats-primary">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col">
+                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                    總產品數
+                                                </div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="totalProducts">0</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-box fa-2x text-primary"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card stats-card stats-success">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col">
+                                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                    總訂單數
+                                                </div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="totalOrders">0</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-shopping-cart fa-2x text-success"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card stats-card stats-info">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col">
+                                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                                    總用戶數
+                                                </div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="totalUsers">0</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-users fa-2x text-info"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card stats-card stats-warning">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col">
+                                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                    總銷售額
+                                                </div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800" id="totalSales">$0</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-dollar-sign fa-2x text-warning"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 近期訂單 -->
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6 class="m-0 font-weight-bold text-primary">近期訂單</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>訂單編號</th>
+                                                        <th>用戶</th>
+                                                        <th>金額</th>
+                                                        <th>狀態</th>
+                                                        <th>日期</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="recentOrders">
+                                                    <!-- 動態載入 -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6 class="m-0 font-weight-bold text-primary">熱門產品</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="popularProducts">
+                                            <!-- 動態載入 -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 產品管理頁面 -->
+                    <div id="products-page" class="page-content">
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h1 class="h3 mb-0 text-gray-800">產品管理</h1>
+                                <p class="text-muted">管理所有商品信息</p>
+                            </div>
+                        </div>
+
+                        <!-- 產品統計 -->
+                        <div id="productStats" class="card mb-4">
+                            <div class="card-body">
+                                <div class="row text-center">
+                                    <div class="col-md-3">
+                                        <div class="text-primary fw-bold fs-4">0</div>
+                                        <div class="text-muted">總產品數</div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="text-success fw-bold fs-4">0</div>
+                                        <div class="text-muted">啟用中</div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="text-warning fw-bold fs-4">0</div>
+                                        <div class="text-muted">庫存不足</div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="text-danger fw-bold fs-4">0</div>
+                                        <div class="text-muted">缺貨</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row align-items-center">
+                                    <div class="col-md-6">
+                                        <h6 class="m-0 font-weight-bold text-primary">產品列表</h6>
+                                    </div>
+                                    <div class="col-md-6 text-end">
+                                        <button class="btn btn-primary" id="addProductBtn">
+                                            <i class="fas fa-plus"></i> 新增產品
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <!-- 搜索和篩選 -->
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <div class="search-box">
+                                            <input type="text" class="form-control" id="productSearch" placeholder="搜索產品名稱或描述...">
+                                            <i class="fas fa-search search-icon"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select class="form-select" id="categoryFilter">
+                                            <option value="">所有分類</option>
+                                            <option value="sofa">沙發</option>
+                                            <option value="chair">椅子</option>
+                                            <option value="table">桌子</option>
+                                            <option value="bed">床具</option>
+                                            <option value="storage">收納</option>
+                                            <option value="decoration">裝飾</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select class="form-select" id="statusFilter">
+                                            <option value="">所有狀態</option>
+                                            <option value="ACTIVE">啟用</option>
+                                            <option value="INACTIVE">停用</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown">
+                                                批量操作
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="#" onclick="admin.bulkAction('enable')">啟用所選</a></li>
+                                                <li><a class="dropdown-item" href="#" onclick="admin.bulkAction('disable')">停用所選</a></li>
+                                                <li><hr class="dropdown-divider"></li>
+                                                <li><a class="dropdown-item text-danger" href="#" onclick="admin.bulkAction('delete')">刪除所選</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th width="40">
+                                                    <input type="checkbox" class="form-check-input" id="selectAllProducts">
+                                                </th>
+                                                <th width="80">圖片</th>
+                                                <th>產品名稱</th>
+                                                <th>分類</th>
+                                                <th>價格</th>
+                                                <th>庫存</th>
+                                                <th>狀態</th>
+                                                <th width="150">操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="productsTable">
+                                            <!-- 動態載入 -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 其他頁面內容將在後續創建 -->
+                    <div id="categories-page" class="page-content">
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h1 class="h3 mb-0 text-gray-800">分類管理</h1>
+                                <p class="text-muted">管理產品分類信息</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <p>分類管理功能開發中...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="orders-page" class="page-content">
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h1 class="h3 mb-0 text-gray-800">訂單管理</h1>
+                                <p class="text-muted">管理所有訂單信息</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <p>訂單管理功能開發中...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="users-page" class="page-content">
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h1 class="h3 mb-0 text-gray-800">用戶管理</h1>
+                                <p class="text-muted">管理所有用戶信息</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <p>用戶管理功能開發中...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="statistics-page" class="page-content">
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h1 class="h3 mb-0 text-gray-800">統計報表</h1>
+                                <p class="text-muted">查看各種統計數據</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <p>統計報表功能開發中...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="settings-page" class="page-content">
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h1 class="h3 mb-0 text-gray-800">系統設定</h1>
+                                <p class="text-muted">管理系統配置</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <p>系統設定功能開發中...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 產品模態框 -->
+    <div class="modal fade" id="productModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">產品管理</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="productForm">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">產品名稱 <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" name="name" required 
+                                                   placeholder="請輸入產品名稱">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">分類 <span class="text-danger">*</span></label>
+                                            <select class="form-select" name="category" required>
+                                                <option value="">選擇分類</option>
+                                                <option value="sofa">沙發</option>
+                                                <option value="chair">椅子</option>
+                                                <option value="table">桌子</option>
+                                                <option value="bed">床具</option>
+                                                <option value="storage">收納</option>
+                                                <option value="decoration">裝飾</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">價格 (元) <span class="text-danger">*</span></label>
+                                            <input type="number" class="form-control" name="price" step="1" min="0" required 
+                                                   placeholder="0">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">庫存數量 <span class="text-danger">*</span></label>
+                                            <input type="number" class="form-control" name="stock" min="0" required 
+                                                   placeholder="0">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">產品描述</label>
+                                    <textarea class="form-control" name="description" rows="4" 
+                                              placeholder="請輸入產品的詳細描述..."></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">狀態</label>
+                                    <select class="form-select" name="status">
+                                        <option value="ACTIVE">啟用</option>
+                                        <option value="INACTIVE">停用</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">產品圖片</label>
+                                    <div id="currentImage"></div>
+                                    <input type="file" class="form-control" name="image" accept="image/*" 
+                                           id="imageInput">
+                                    <div class="form-text">
+                                        支持 JPG、PNG、GIF 格式，建議尺寸 800x600px
+                                    </div>
+                                    <div id="imagePreview" class="mt-2"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times"></i> 取消
+                    </button>
+                    <button type="button" class="btn btn-primary" id="saveProductBtn">
+                        <i class="fas fa-save"></i> 儲存
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/admin-main.js"></script>
+</body>
+</html> 

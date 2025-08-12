@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>搜索結果 - CYY</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="search-results.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="fonts-loading">
+    <!-- 導航欄 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="index.html" class="home-btn">
+                    <i class="fas fa-home"></i>
+                </a>
+                <div class="hamburger-menu">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+            
+            <div class="nav-center">
+                <div class="logo">
+                    <h1><a href="index.html">CYY</a></h1>
+                </div>
+            </div>
+            
+            <div class="nav-right">
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="搜索家具..." id="searchInput">
+                    <i class="fas fa-search search-icon"></i>
+                </div>
+                
+                <div class="nav-icons">
+                    <a href="#" class="nav-icon" id="userIcon">
+                        <i class="far fa-user"></i>
+                    </a>
+                    <a href="wishlist.html" class="nav-icon" id="wishlistIcon">
+                        <i class="far fa-heart"></i>
+                    </a>
+                    <a href="cart.html" class="nav-icon" id="cartIcon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 隱藏的導航菜單 -->
+        <div class="nav-menu-overlay">
+            <div class="nav-menu-container">
+                <div class="nav-menu-header">
+                    <h2>CYY</h2>
+                    <button class="close-menu">&times;</button>
+                </div>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">首頁</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">客廳家具</a>
+                        <ul class="sub-menu">
+                            <li><a href="#">沙發</a></li>
+                            <li><a href="#">茶几</a></li>
+                            <li><a href="#">電視櫃</a></li>
+                            <li><a href="#">書櫃</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">臥室家具</a>
+                        <ul class="sub-menu">
+                            <li><a href="#">床架</a></li>
+                            <li><a href="#">床墊</a></li>
+                            <li><a href="#">衣櫃</a></li>
+                            <li><a href="#">化妝台</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">餐廳家具</a>
+                        <ul class="sub-menu">
+                            <li><a href="#">餐桌</a></li>
+                            <li><a href="#">餐椅</a></li>
+                            <li><a href="#">餐邊櫃</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">辦公家具</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">優惠活動</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">關於我們</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 搜索結果主要內容 -->
+    <main class="search-results-main">
+        <div class="container">
+            <!-- 搜索標題 -->
+            <section class="search-header">
+                <h1 class="search-title">搜索結果</h1>
+                <p class="search-info">為「<span id="searchTerm"></span>」找到 <span id="resultCount">0</span> 個結果</p>
+            </section>
+
+            <!-- 搜索篩選器 -->
+            <section class="search-filters">
+                <div class="filter-bar">
+                    <div class="filter-group">
+                        <label for="sortBy">排序方式：</label>
+                        <select id="sortBy">
+                            <option value="relevance">相關度</option>
+                            <option value="price-low">價格：低到高</option>
+                            <option value="price-high">價格：高到低</option>
+                            <option value="newest">最新上架</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="categoryFilter">分類：</label>
+                        <select id="categoryFilter">
+                            <option value="">全部分類</option>
+                            <option value="living">客廳家具</option>
+                            <option value="bedroom">臥室家具</option>
+                            <option value="dining">餐廳家具</option>
+                            <option value="office">辦公家具</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="priceRange">價格範圍：</label>
+                        <select id="priceRange">
+                            <option value="">全部價格</option>
+                            <option value="0-5000">$0 - $5,000</option>
+                            <option value="5000-10000">$5,000 - $10,000</option>
+                            <option value="10000-20000">$10,000 - $20,000</option>
+                            <option value="20000+">$20,000+</option>
+                        </select>
+                    </div>
+                    
+                    <button class="clear-filters">清除篩選</button>
+                </div>
+            </section>
+
+            <!-- 搜索結果 -->
+            <section class="search-results">
+                <div class="results-grid" id="resultsGrid">
+                    <!-- 搜索結果將通過JavaScript動態加載 -->
+                </div>
+                
+                <!-- 無結果顯示 -->
+                <div class="no-results" id="noResults" style="display: none;">
+                    <div class="no-results-content">
+                        <i class="fas fa-search"></i>
+                        <h3>未找到相關結果</h3>
+                        <p>請嘗試使用不同的關鍵詞搜索</p>
+                        <a href="index.html" class="back-home-btn">返回首頁</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 分頁 -->
+            <section class="pagination" id="pagination">
+                <div class="pagination-container">
+                    <button class="pagination-btn" id="prevPage" disabled>上一頁</button>
+                    <div class="pagination-numbers" id="pageNumbers"></div>
+                    <button class="pagination-btn" id="nextPage">下一頁</button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- 底部 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>CYY</h3>
+                    <p>為您打造舒適優雅的家居環境，嚴選高品質家具，讓生活更美好。</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>產品分類</h4>
+                    <ul>
+                        <li><a href="#">客廳家具</a></li>
+                        <li><a href="#">臥室家具</a></li>
+                        <li><a href="#">餐廳家具</a></li>
+                        <li><a href="#">辦公家具</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>客戶服務</h4>
+                    <ul>
+                        <li><a href="#">聯繫我們</a></li>
+                        <li><a href="#">退換貨政策</a></li>
+                        <li><a href="#">配送資訊</a></li>
+                        <li><a href="#">常見問題</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>聯繫資訊</h4>
+                    <p>電話：(02) 2345-6789</p>
+                    <p>Email：info@cyy.com</p>
+                    <p>地址：台北市信義區信義路五段7號</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 CYY. 版權所有</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="search-results.js"></script>
+    
+    <!-- 字體載入優化 -->
+    <script>
+        // 檢查字體載入狀態
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(() => {
+                document.body.classList.remove('fonts-loading');
+                document.body.classList.add('fonts-loaded');
+            });
+        } else {
+            // 備用方案：延遲顯示
+            setTimeout(() => {
+                document.body.classList.remove('fonts-loading');
+                document.body.classList.add('fonts-loaded');
+            }, 100);
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>購物車測試 - CYY</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #8b7355;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .cart-items-container {
+            min-height: 200px;
+            border: 2px dashed #ddd;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .cart-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            background: white;
+        }
+        .cart-item img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-right: 15px;
+        }
+        .item-details {
+            flex: 1;
+        }
+        .item-details h3 {
+            margin: 0 0 5px 0;
+            color: #333;
+        }
+        .item-price {
+            font-weight: bold;
+            color: #8b7355;
+        }
+        .empty-cart {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        .btn {
+            background: #8b7355;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .btn:hover {
+            background: #6d5a41;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .success {
+            background: #c6f6d5;
+            color: #2f855a;
+        }
+        .error {
+            background: #fed7d7;
+            color: #c53030;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>購物車功能測試</h1>
+        
+        <div class="test-section">
+            <h2>測試操作</h2>
+            <button class="btn" onclick="addTestItem()">添加測試商品</button>
+            <button class="btn" onclick="loadCart()">載入購物車</button>
+            <button class="btn" onclick="clearCart()">清空購物車</button>
+            <div id="status" class="status"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>購物車內容</h2>
+            <div class="cart-items-container" id="cartContainer">
+                <div class="empty-cart">購物車為空</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 測試函數
+        function addTestItem() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const testItem = {
+                id: Date.now(),
+                name: '測試商品 ' + (cart.length + 1),
+                price: 9999,
+                quantity: 1,
+                image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
+            };
+            
+            cart.push(testItem);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            
+            showStatus('測試商品已添加', 'success');
+            loadCart();
+        }
+        
+        function loadCart() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const container = document.getElementById('cartContainer');
+            
+            if (cart.length === 0) {
+                container.innerHTML = '<div class="empty-cart">購物車為空</div>';
+                showStatus('購物車為空', 'error');
+                return;
+            }
+            
+            let html = '';
+            cart.forEach(item => {
+                html += `
+                    <div class="cart-item">
+                        <img src="${item.image}" alt="${item.name}">
+                        <div class="item-details">
+                            <h3>${item.name}</h3>
+                            <div class="item-price">NT$ ${item.price.toLocaleString()}</div>
+                            <div>數量: ${item.quantity}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+            showStatus(`載入成功，共 ${cart.length} 件商品`, 'success');
+        }
+        
+        function clearCart() {
+            localStorage.removeItem('cart');
+            loadCart();
+            showStatus('購物車已清空', 'success');
+        }
+        
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = `status ${type}`;
+        }
+        
+        // 頁面載入時初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCart();
+        });
+    </script>
+</body>
+</html> 

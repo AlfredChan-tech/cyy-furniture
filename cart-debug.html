@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>購物車診斷 - CYY</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="cart.css">
+    <style>
+        .debug-panel {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: #333;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            z-index: 9999;
+            max-width: 300px;
+            font-size: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .debug-panel h4 {
+            margin: 0 0 10px 0;
+            color: #4CAF50;
+        }
+        .debug-panel button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        .debug-panel button:hover {
+            background: #45a049;
+        }
+        .debug-panel .danger {
+            background: #f44336;
+        }
+        .debug-panel .danger:hover {
+            background: #d32f2f;
+        }
+        .debug-info {
+            background: #222;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .debug-toggle {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: #8b7355;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10000;
+            font-size: 18px;
+        }
+        .debug-panel.hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- 調試切換按鈕 -->
+    <button class="debug-toggle" onclick="toggleDebug()">🔧</button>
+    
+    <!-- 調試面板 -->
+    <div class="debug-panel hidden" id="debugPanel">
+        <h4>購物車診斷</h4>
+        <button onclick="showCartData()">顯示購物車數據</button>
+        <button onclick="addTestItem()">添加測試商品</button>
+        <button onclick="clearCart()">清空購物車</button>
+        <button onclick="forceRender()">強制重新渲染</button>
+        <button class="danger" onclick="clearAllStorage()">清空所有存儲</button>
+        <div class="debug-info" id="debugInfo">點擊按鈕查看調試信息</div>
+    </div>
+
+    <!-- 購物車頁面內容 -->
+    <div class="container">
+        <h1>購物車診斷頁面</h1>
+        
+        <!-- 簡化的購物車容器 -->
+        <div class="cart-items">
+            <div class="cart-table-header">
+                <div class="header-cell select-all">
+                    <input type="checkbox" id="selectAll">
+                    <label for="selectAll">全選</label>
+                </div>
+                <div class="header-cell product-info">商品信息</div>
+                <div class="header-cell unit-price">單價</div>
+                <div class="header-cell quantity">數量</div>
+                <div class="header-cell subtotal">小計</div>
+                <div class="header-cell actions">操作</div>
+            </div>
+
+            <div class="cart-items-container">
+                <!-- 購物車商品將通過JavaScript動態生成 -->
+            </div>
+
+            <!-- 空購物車狀態 -->
+            <div class="empty-cart" style="display: none;">
+                <div class="empty-cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <h3>您的購物車是空的</h3>
+                <p>快去挑選心儀的家具吧！</p>
+                <a href="index.html" class="btn-primary">繼續購物</a>
+            </div>
+        </div>
+        
+        <!-- 摘要信息 -->
+        <div class="cart-summary">
+            <h3>訂單摘要</h3>
+            <div class="summary-row">
+                <span>商品總價</span>
+                <span class="subtotal-amount">NT$ 0</span>
+            </div>
+            <div class="summary-row total-row">
+                <span>總計</span>
+                <span class="total-amount">NT$ 0</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="cart.js"></script>
+    <script>
+        // 調試函數
+        function toggleDebug() {
+            const panel = document.getElementById('debugPanel');
+            panel.classList.toggle('hidden');
+        }
+        
+        function showCartData() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const debugInfo = document.getElementById('debugInfo');
+            
+            let info = `購物車商品數量: ${cart.length}\n\n`;
+            
+            if (cart.length > 0) {
+                cart.forEach((item, index) => {
+                    info += `商品 ${index + 1}:\n`;
+                    info += `  名稱: ${item.name}\n`;
+                    info += `  價格: NT$ ${item.price}\n`;
+                    info += `  數量: ${item.quantity}\n`;
+                    info += `  ID: ${item.id}\n\n`;
+                });
+            } else {
+                info += '購物車為空\n';
+            }
+            
+            // 檢查DOM元素
+            const container = document.querySelector('.cart-items-container');
+            info += `\nDOM狀態:\n`;
+            info += `  容器存在: ${container ? '是' : '否'}\n`;
+            info += `  容器內容: ${container ? container.innerHTML.length : 0} 字符\n`;
+            
+            debugInfo.textContent = info;
+        }
+        
+        function addTestItem() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const testItem = {
+                id: Date.now(),
+                name: '診斷測試商品',
+                price: 12345,
+                quantity: 1,
+                image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
+            };
+            
+            cart.push(testItem);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            
+            document.getElementById('debugInfo').textContent = '測試商品已添加';
+            
+            // 重新初始化購物車
+            if (typeof initCart === 'function') {
+                initCart();
+            }
+        }
+        
+        function clearCart() {
+            localStorage.removeItem('cart');
+            document.getElementById('debugInfo').textContent = '購物車已清空';
+            
+            // 重新初始化購物車
+            if (typeof initCart === 'function') {
+                initCart();
+            }
+        }
+        
+        function forceRender() {
+            document.getElementById('debugInfo').textContent = '強制重新渲染中...';
+            
+            // 重新初始化購物車
+            if (typeof initCart === 'function') {
+                initCart();
+            }
+            
+            setTimeout(() => {
+                showCartData();
+            }, 500);
+        }
+        
+        function clearAllStorage() {
+            if (confirm('確定要清空所有本地存儲數據嗎？')) {
+                localStorage.clear();
+                document.getElementById('debugInfo').textContent = '所有存儲已清空';
+                
+                // 重新初始化購物車
+                if (typeof initCart === 'function') {
+                    initCart();
+                }
+            }
+        }
+        
+        // 頁面載入時顯示初始信息
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                showCartData();
+            }, 1000);
+        });
+    </script>
+</body>
+</html> 

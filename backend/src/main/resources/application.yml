@@ -1,0 +1,127 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: cyy-furniture-backend
+  
+  # 數據庫配置 - H2內存數據庫
+  datasource:
+    url: jdbc:h2:mem:cyy_furniture;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+    
+  # H2 控制台配置
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+    
+  # JPA 配置
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true
+    defer-datasource-initialization: true
+    
+  # SQL 初始化
+  sql:
+    init:
+      mode: always
+      
+  # Jackson 配置
+  jackson:
+    default-property-inclusion: non_null
+    serialization:
+      write-dates-as-timestamps: false
+    time-zone: Asia/Taipei
+
+# JWT 配置
+jwt:
+  secret: CYY-Furniture-Secret-Key-For-JWT-Token-Generation-2024
+  expiration: 86400000 # 24小時 (毫秒)
+  refresh-expiration: 604800000 # 7天 (毫秒)
+
+# 文件上傳配置
+file:
+  upload:
+    directory: ./uploads/
+    max-size: 10MB
+
+# Swagger 配置
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+  packages-to-scan: com.cyy.furniture.controller
+
+# 日誌配置
+logging:
+  level:
+    com.cyy.furniture: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# 跨域配置
+cors:
+  allowed-origins: 
+    - http://localhost:3000
+    - http://127.0.0.1:3000
+    - http://localhost:5500
+    - http://127.0.0.1:5500
+  allowed-methods: 
+    - GET
+    - POST
+    - PUT
+    - DELETE
+    - OPTIONS
+  allowed-headers: "*"
+  allow-credentials: true
+
+---
+# 開發環境配置
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+
+---
+# 生產環境配置
+spring:
+  config:
+    activate:
+      on-profile: prod
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+
+logging:
+  level:
+    com.cyy.furniture: INFO
+    org.springframework.security: WARN 

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYY管理員登錄 - 調試版</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .debug-panel {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .debug-title {
+            font-weight: bold;
+            color: #495057;
+            margin-bottom: 10px;
+        }
+        .debug-info {
+            color: #6c757d;
+            white-space: pre-wrap;
+        }
+        .login-container {
+            max-width: 600px;
+            margin: 50px auto;
+        }
+        .expected-values {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="login-container">
+            <h2 class="text-center mb-4">CYY管理員登錄 - 調試版</h2>
+            
+            <div class="expected-values">
+                <strong>正確的登錄憑據：</strong><br>
+                用戶名：admin032630<br>
+                密碼：admin123
+            </div>
+            
+            <div class="debug-panel">
+                <div class="debug-title">實時調試信息：</div>
+                <div class="debug-info" id="debugInfo">等待用戶輸入...</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-body">
+                    <form id="debugLoginForm">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">用戶名</label>
+                            <input type="text" class="form-control" id="username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">密碼</label>
+                            <input type="password" class="form-control" id="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">登錄</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="mt-3">
+                <button class="btn btn-secondary" onclick="clearStorageDebug()">清理存儲</button>
+                <button class="btn btn-info" onclick="checkStorageDebug()">檢查存儲</button>
+                <button class="btn btn-success" onclick="autoFill()">自動填充</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 調試信息顯示
+        function updateDebugInfo(message) {
+            const debugInfo = document.getElementById('debugInfo');
+            const timestamp = new Date().toLocaleTimeString();
+            debugInfo.textContent += `[${timestamp}] ${message}\n`;
+            debugInfo.scrollTop = debugInfo.scrollHeight;
+        }
+
+        // 預定義的管理員憑據
+        const adminCredentials = {
+            'admin032630': 'admin123',
+            'CYY302630': '1'
+        };
+
+        // 管理員權限
+        const adminRoles = {
+            'admin032630': { level: 'super_admin', name: '超級管理員', permissions: ['all'] },
+            'CYY302630': { level: 'product_manager', name: '商品管理員', permissions: ['products', 'categories', 'dashboard'] }
+        };
+
+        // 監聽輸入變化
+        document.getElementById('username').addEventListener('input', function(e) {
+            updateDebugInfo(`用戶名輸入：「${e.target.value}」`);
+            updateDebugInfo(`用戶名長度：${e.target.value.length}`);
+            updateDebugInfo(`是否為有效用戶：${adminCredentials.hasOwnProperty(e.target.value) ? '是' : '否'}`);
+        });
+
+        document.getElementById('password').addEventListener('input', function(e) {
+            const username = document.getElementById('username').value;
+            updateDebugInfo(`密碼輸入：「${e.target.value}」`);
+            updateDebugInfo(`密碼長度：${e.target.value.length}`);
+            if (username && adminCredentials[username]) {
+                updateDebugInfo(`密碼匹配：${adminCredentials[username] === e.target.value ? '是' : '否'}`);
+                updateDebugInfo(`期望密碼：「${adminCredentials[username]}」`);
+            }
+        });
+
+        // 表單提交處理
+        document.getElementById('debugLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            updateDebugInfo(`開始登錄驗證...`);
+            updateDebugInfo(`提交的用戶名：「${username}」`);
+            updateDebugInfo(`提交的密碼：「${password}」`);
+            
+            // 檢查用戶名
+            if (!adminCredentials.hasOwnProperty(username)) {
+                updateDebugInfo(`❌ 用戶名不存在`);
+                alert('用戶名不存在');
+                return;
+            }
+            
+            // 檢查密碼
+            if (adminCredentials[username] !== password) {
+                updateDebugInfo(`❌ 密碼錯誤`);
+                updateDebugInfo(`期望：「${adminCredentials[username]}」`);
+                updateDebugInfo(`實際：「${password}」`);
+                alert('密碼錯誤');
+                return;
+            }
+            
+            // 登錄成功
+            updateDebugInfo(`✅ 登錄成功！`);
+            const role = adminRoles[username];
+            updateDebugInfo(`角色：${role.name}`);
+            updateDebugInfo(`權限：${role.permissions.join(', ')}`);
+            
+            // 生成token
+            const token = 'mock-admin-token-' + Date.now();
+            localStorage.setItem('adminToken', token);
+            localStorage.setItem('adminUsername', username);
+            
+            updateDebugInfo(`Token已生成：${token}`);
+            updateDebugInfo(`準備跳轉到管理後台...`);
+            
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 2000);
+        });
+
+        // 自動填充
+        function autoFill() {
+            document.getElementById('username').value = 'admin032630';
+            document.getElementById('password').value = 'admin123';
+            updateDebugInfo(`自動填充超級管理員憑據`);
+        }
+
+        // 清理存儲
+        function clearStorageDebug() {
+            localStorage.clear();
+            sessionStorage.clear();
+            updateDebugInfo(`存儲已清理`);
+        }
+
+        // 檢查存儲
+        function checkStorageDebug() {
+            const localToken = localStorage.getItem('adminToken');
+            const localUsername = localStorage.getItem('adminUsername');
+            updateDebugInfo(`localStorage - Token: ${localToken || '無'}`);
+            updateDebugInfo(`localStorage - Username: ${localUsername || '無'}`);
+        }
+
+        // 頁面載入時的初始化
+        window.onload = function() {
+            updateDebugInfo(`調試登錄頁面已載入`);
+            updateDebugInfo(`當前時間：${new Date().toLocaleString()}`);
+            checkStorageDebug();
+        };
+    </script>
+</body>
+</html> 

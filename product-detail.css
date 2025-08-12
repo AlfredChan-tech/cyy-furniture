@@ -1,0 +1,755 @@
+/* 產品詳情頁面樣式 */
+
+/* 麵包屑導航 */
+.breadcrumb {
+    background-color: #f8f8f8;
+    padding: 15px 0;
+    margin-top: 80px;
+    border-bottom: 1px solid #eee;
+}
+
+.breadcrumb-nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+}
+
+.breadcrumb-nav a {
+    color: #666;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.breadcrumb-nav a:hover {
+    color: #8b7355;
+}
+
+.breadcrumb-nav span {
+    color: #ccc;
+}
+
+/* 產品詳情主要區域 */
+.product-detail {
+    padding: 40px 0;
+    background-color: #fff;
+}
+
+.product-detail-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: flex-start;
+}
+
+/* 產品圖片區域 */
+.product-images {
+    position: sticky;
+    top: 100px;
+}
+
+.main-image {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.main-image img {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.main-image:hover img {
+    transform: scale(1.05);
+}
+
+.image-overlay {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.main-image:hover .image-overlay {
+    opacity: 1;
+}
+
+.zoom-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+.zoom-btn:hover {
+    background-color: #8b7355;
+    color: white;
+    transform: scale(1.1);
+}
+
+.image-thumbnails {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.thumbnail {
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.3s ease;
+}
+
+.thumbnail.active {
+    border-color: #8b7355;
+}
+
+.thumbnail img {
+    width: 100%;
+    height: 80px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.thumbnail:hover img {
+    transform: scale(1.1);
+}
+
+/* 產品信息區域 */
+.product-info {
+    padding: 20px 0;
+}
+
+.product-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.product-rating {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.stars {
+    color: #f39c12;
+    font-size: 16px;
+}
+
+.rating-count {
+    color: #666;
+    font-size: 14px;
+}
+
+.product-price {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.current-price {
+    font-size: 28px;
+    font-weight: 600;
+    color: #8b7355;
+}
+
+.original-price {
+    font-size: 20px;
+    color: #999;
+    text-decoration: line-through;
+}
+
+.discount {
+    background-color: #e74c3c;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.product-description {
+    margin-bottom: 30px;
+    line-height: 1.6;
+    color: #666;
+}
+
+/* 產品選項 */
+.product-options {
+    margin-bottom: 30px;
+}
+
+.option-group {
+    margin-bottom: 20px;
+}
+
+.option-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.color-options {
+    display: flex;
+    gap: 10px;
+}
+
+.color-option {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.color-option.active {
+    border-color: #8b7355;
+    box-shadow: 0 0 0 2px rgba(139, 115, 85, 0.3);
+}
+
+.color-option:hover {
+    transform: scale(1.1);
+}
+
+.size-options {
+    display: flex;
+    gap: 10px;
+}
+
+.size-option {
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    background-color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.size-option.active {
+    background-color: #8b7355;
+    color: white;
+    border-color: #8b7355;
+}
+
+.size-option:hover {
+    border-color: #8b7355;
+}
+
+/* 數量選擇器 */
+.quantity-selector {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.quantity-selector label {
+    font-weight: 600;
+    color: #333;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.quantity-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background-color: #f8f8f8;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+}
+
+.quantity-btn:hover {
+    background-color: #8b7355;
+    color: white;
+}
+
+.quantity-input {
+    width: 60px;
+    height: 40px;
+    border: none;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.quantity-input:focus {
+    outline: none;
+}
+
+/* 購買按鈕 */
+.purchase-buttons {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.btn-primary {
+    flex: 1;
+    background-color: #8b7355;
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 16px;
+}
+
+.btn-primary:hover {
+    background-color: #705d47;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    flex: 1;
+    background-color: transparent;
+    color: #8b7355;
+    border: 2px solid #8b7355;
+    padding: 15px 20px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 16px;
+}
+
+.btn-secondary:hover {
+    background-color: #8b7355;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.btn-wishlist {
+    width: 50px;
+    height: 50px;
+    border: 2px solid #ddd;
+    background-color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+    color: #666;
+    transition: all 0.3s ease;
+}
+
+.btn-wishlist:hover {
+    border-color: #e74c3c;
+    color: #e74c3c;
+}
+
+.btn-wishlist.active {
+    border-color: #e74c3c;
+    color: #e74c3c;
+    background-color: #fff5f5;
+}
+
+/* 配送信息 */
+.shipping-info {
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+.shipping-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.shipping-item i {
+    font-size: 20px;
+    color: #8b7355;
+    width: 24px;
+}
+
+.shipping-item strong {
+    display: block;
+    margin-bottom: 2px;
+    color: #333;
+}
+
+.shipping-item span {
+    color: #666;
+    font-size: 14px;
+}
+
+/* 產品標籤頁 */
+.product-tabs {
+    background-color: #f8f8f8;
+    padding: 60px 0;
+}
+
+.tabs-nav {
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 40px;
+}
+
+.tab-btn {
+    padding: 15px 30px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    color: #666;
+    transition: all 0.3s ease;
+    border-bottom: 2px solid transparent;
+}
+
+.tab-btn.active {
+    color: #8b7355;
+    border-bottom-color: #8b7355;
+}
+
+.tab-btn:hover {
+    color: #8b7355;
+}
+
+.tabs-content {
+    background-color: white;
+    border-radius: 8px;
+    padding: 40px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.content-section h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.content-section h4 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 25px 0 15px;
+    color: #333;
+}
+
+.content-section p {
+    line-height: 1.6;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.content-section ul {
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+.content-section li {
+    margin-bottom: 8px;
+    color: #666;
+    line-height: 1.5;
+}
+
+/* 規格表格 */
+.spec-table {
+    border: 1px solid #eee;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.spec-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    border-bottom: 1px solid #eee;
+}
+
+.spec-row:last-child {
+    border-bottom: none;
+}
+
+.spec-label {
+    padding: 15px 20px;
+    background-color: #f8f8f8;
+    font-weight: 600;
+    color: #333;
+}
+
+.spec-value {
+    padding: 15px 20px;
+    color: #666;
+}
+
+/* 評價區域 */
+.reviews-summary {
+    background-color: #f8f8f8;
+    padding: 30px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.rating-overview {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 40px;
+    align-items: center;
+}
+
+.average-rating {
+    text-align: center;
+}
+
+.rating-score {
+    font-size: 48px;
+    font-weight: 600;
+    color: #8b7355;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.average-rating .stars {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.total-reviews {
+    color: #666;
+    font-size: 14px;
+}
+
+.rating-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.rating-bar {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 14px;
+}
+
+.rating-bar span:first-child {
+    width: 30px;
+    color: #666;
+}
+
+.rating-bar span:last-child {
+    width: 40px;
+    color: #666;
+}
+
+.bar {
+    flex: 1;
+    height: 8px;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.fill {
+    height: 100%;
+    background-color: #f39c12;
+    transition: width 0.3s ease;
+}
+
+.reviews-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.review-item {
+    padding: 20px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    background-color: white;
+}
+
+.review-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.reviewer-name {
+    font-weight: 600;
+    color: #333;
+}
+
+.review-rating {
+    color: #f39c12;
+    font-size: 14px;
+}
+
+.review-date {
+    color: #999;
+    font-size: 12px;
+    margin-left: auto;
+}
+
+.review-content p {
+    color: #666;
+    line-height: 1.5;
+}
+
+/* 相關推薦 */
+.related-products {
+    padding: 60px 0;
+    background-color: #fff;
+}
+
+.related-products .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .product-detail-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .product-images {
+        position: static;
+    }
+    
+    .main-image img {
+        height: 300px;
+    }
+    
+    .product-title {
+        font-size: 24px;
+    }
+    
+    .current-price {
+        font-size: 24px;
+    }
+    
+    .original-price {
+        font-size: 16px;
+    }
+    
+    .purchase-buttons {
+        flex-direction: column;
+    }
+    
+    .tabs-nav {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .tab-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+    
+    .tabs-content {
+        padding: 20px;
+    }
+    
+    .rating-overview {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        text-align: center;
+    }
+    
+    .spec-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .spec-label {
+        border-bottom: 1px solid #eee;
+    }
+    
+    .related-products .products-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .product-detail {
+        padding: 20px 0;
+    }
+    
+    .breadcrumb {
+        padding: 10px 0;
+    }
+    
+    .breadcrumb-nav {
+        font-size: 12px;
+    }
+    
+    .image-thumbnails {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .thumbnail img {
+        height: 60px;
+    }
+    
+    .color-options {
+        flex-wrap: wrap;
+    }
+    
+    .size-options {
+        flex-wrap: wrap;
+    }
+    
+    .tabs-content {
+        padding: 15px;
+    }
+    
+    .review-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    .review-date {
+        margin-left: 0;
+    }
+} 
