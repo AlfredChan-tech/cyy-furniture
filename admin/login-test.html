@@ -85,9 +85,9 @@
         <h2>CYY後台管理登錄</h2>
         
         <div class="info">
-            <strong>測試帳號信息：</strong><br>
-            帳號: admin<br>
-            密碼: admin123
+            <strong>可用帳號信息：</strong><br>
+            帳號: admin / 密碼: admin123<br>
+            帳號: 1 / 密碼: 1
         </div>
         
         <div class="alert alert-error" id="errorAlert"></div>
@@ -151,7 +151,8 @@
             setTimeout(() => {
                 console.log('開始驗證...');
                 
-                if (username === 'admin' && password === 'admin123') {
+                if ((username === 'admin' && password === 'admin123') || 
+                    (username === '1' && password === '1')) {
                     console.log('登錄成功');
                     showSuccess('登錄成功！正在跳轉...');
                     
