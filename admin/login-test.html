@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYY後台登錄測試</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 400px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        .alert {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            display: none;
+        }
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        .info {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h2>CYY後台管理登錄</h2>
+        
+        <div class="info">
+            <strong>測試帳號信息：</strong><br>
+            帳號: admin<br>
+            密碼: admin123
+        </div>
+        
+        <div class="alert alert-error" id="errorAlert"></div>
+        <div class="alert alert-success" id="successAlert"></div>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">管理員帳號:</label>
+                <input type="text" id="username" name="username" value="admin" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">密碼:</label>
+                <input type="password" id="password" name="password" value="admin123" required>
+            </div>
+            
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="rememberMe" name="rememberMe"> 記住我
+                </label>
+            </div>
+            
+            <button type="submit" id="loginBtn">登錄</button>
+        </form>
+        
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="../index.html" style="color: #667eea;">返回前台</a> |
+            <a href="dashboard.html" style="color: #667eea;">直接進入後台</a>
+        </div>
+    </div>
+
+    <script>
+        console.log('登錄頁面已載入');
+        
+        // 登錄表單處理
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            console.log('登錄表單提交');
+            
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const rememberMe = document.getElementById('rememberMe').checked;
+            
+            console.log('輸入信息:', { username, password, rememberMe });
+            
+            // 隱藏之前的提示
+            hideAlerts();
+            
+            // 驗證輸入
+            if (!username || !password) {
+                showError('請輸入帳號和密碼');
+                return;
+            }
+            
+            // 顯示載入狀態
+            const loginBtn = document.getElementById('loginBtn');
+            loginBtn.textContent = '登錄中...';
+            loginBtn.disabled = true;
+            
+            // 驗證帳號密碼
+            setTimeout(() => {
+                console.log('開始驗證...');
+                
+                if (username === 'admin' && password === 'admin123') {
+                    console.log('登錄成功');
+                    showSuccess('登錄成功！正在跳轉...');
+                    
+                    // 保存登錄狀態
+                    if (rememberMe) {
+                        localStorage.setItem('adminRememberMe', 'true');
+                        localStorage.setItem('adminUsername', username);
+                    }
+                    sessionStorage.setItem('adminLoggedIn', 'true');
+                    sessionStorage.setItem('adminUsername', username);
+                    sessionStorage.setItem('adminLoginTime', new Date().toISOString());
+                    
+                    console.log('登錄狀態已保存');
+                    
+                    // 跳轉到儀表板
+                    setTimeout(() => {
+                        console.log('跳轉到儀表板...');
+                        window.location.href = 'dashboard.html';
+                    }, 1500);
+                    
+                } else {
+                    console.log('登錄失敗');
+                    showError('帳號或密碼錯誤！請檢查輸入');
+                    loginBtn.textContent = '登錄';
+                    loginBtn.disabled = false;
+                }
+            }, 1000);
+        });
+        
+        // 顯示錯誤訊息
+        function showError(message) {
+            const errorAlert = document.getElementById('errorAlert');
+            errorAlert.textContent = message;
+            errorAlert.style.display = 'block';
+            
+            setTimeout(() => {
+                errorAlert.style.display = 'none';
+            }, 5000);
+        }
+        
+        // 顯示成功訊息
+        function showSuccess(message) {
+            const successAlert = document.getElementById('successAlert');
+            successAlert.textContent = message;
+            successAlert.style.display = 'block';
+        }
+        
+        // 隱藏所有提示
+        function hideAlerts() {
+            document.getElementById('errorAlert').style.display = 'none';
+            document.getElementById('successAlert').style.display = 'none';
+        }
+        
+        // 檢查是否已經登錄
+        if (sessionStorage.getItem('adminLoggedIn') === 'true') {
+            console.log('已經登錄，跳轉到儀表板');
+            window.location.href = 'dashboard.html';
+        }
+        
+        // 自動填入記住的帳號
+        if (localStorage.getItem('adminRememberMe') === 'true') {
+            const savedUsername = localStorage.getItem('adminUsername');
+            if (savedUsername) {
+                document.getElementById('username').value = savedUsername;
+                document.getElementById('rememberMe').checked = true;
+            }
+        }
+        
+        console.log('登錄頁面初始化完成');
+    </script>
+</body>
+</html>

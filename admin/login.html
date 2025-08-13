@@ -388,8 +388,9 @@
             
             // 模擬登錄請求
             setTimeout(() => {
-                // 這裡應該是實際的登錄API調用
-                if (username === 'admin' && password === 'admin123') {
+                // 登錄驗證邏輯
+                console.log('驗證登錄:', username, password);
+                if (username.trim() === 'admin' && password.trim() === 'admin123') {
                     showSuccess('登錄成功，正在跳轉...');
                     
                     // 保存登錄狀態
