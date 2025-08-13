@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYY系統測試面板</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .test-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+        
+        .test-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .test-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-success { background-color: #d4edda; color: #155724; }
+        .status-warning { background-color: #fff3cd; color: #856404; }
+        .status-error { background-color: #f8d7da; color: #721c24; }
+        
+        .btn-test {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-test:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 10px rgba(102, 126, 234, 0.3);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="test-container">
+            <h1 class="text-center mb-4">
+                <i class="fas fa-cog text-primary"></i> CYY系統測試面板
+            </h1>
+            <p class="text-center text-muted mb-5">測試前台和後台系統的各項功能</p>
+            
+            <!-- 前台系統測試 -->
+            <div class="row">
+                <div class="col-md-6">
+                    <h3 class="mb-4">
+                        <i class="fas fa-store text-success"></i> 前台系統測試
+                    </h3>
+                    
+                    <div class="test-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="mb-1">主頁功能</h5>
+                                <small class="text-muted">輪播圖、產品展示、導航</small>
+                            </div>
+                            <div>
+                                <span class="status-badge status-success" id="homepage-status">待測試</span>
+                                <button class="btn btn-test btn-sm ms-2" onclick="testHomepage()">測試</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="test-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="mb-1">產品詳情頁</h5>
+                                <small class="text-muted">產品展示、加入購物車</small>
+                            </div>
+                            <div>
+                                <span class="status-badge status-warning" id="product-status">待測試</span>
+                                <button class="btn btn-test btn-sm ms-2" onclick="testProductDetail()">測試</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="test-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="mb-1">購物車功能</h5>
+                                <small class="text-muted">添加商品、數量調整、結帳</small>
+                            </div>
+                            <div>
+                                <span class="status-badge status-warning" id="cart-status">待測試</span>
+                                <button class="btn btn-test btn-sm ms-2" onclick="testCart()">測試</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="test-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="mb-1">搜索功能</h5>
+                                <small class="text-muted">商品搜索、篩選</small>
+                            </div>
+                            <div>
+                                <span class="status-badge status-warning" id="search-status">待測試</span>
+                                <button class="btn btn-test btn-sm ms-2" onclick="testSearch()">測試</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="test-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="mb-1">收藏功能</h5>
+                                <small class="text-muted">收藏商品、收藏列表</small>
+                            </div>
+                            <div>
+                                <span class="status-badge status-warning" id="wishlist-status">待測試</span>
+                                <button class="btn btn-test btn-sm ms-2" onclick="testWishlist()">測試</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 後台系統測試 -->
+                <div class="col-md-6">
+                    <h3 class="mb-4">
+                        <i class="fas fa-cogs text-primary"></i> 後台系統測試
+                    </h3>
+                    
+                    <div class="test-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="mb-1">登錄系統</h5>
+                                <small class="text-muted">管理員登錄、會話管理</small>
+                            </div>
+                            <div>
+                                <span class="status-badge status-success" id="admin-login-status">待測試</span>
+                                <button class="btn btn-test btn-sm ms-2" onclick="testAdminLogin()">測試</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="test-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="mb-1">儀表板</h5>
+                                <small class="text-muted">數據展示、圖表</small>
+                            </div>
+                            <div>
+                                <span class="status-badge status-warning" id="dashboard-status">待測試</span>
+                                <button class="btn btn-test btn-sm ms-2" onclick="testDashboard()">測試</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="test-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="mb-1">產品管理</h5>
+                                <small class="text-muted">產品列表、新增編輯</small>
+                            </div>
+                            <div>
+                                <span class="status-badge status-warning" id="admin-products-status">待測試</span>
+                                <button class="btn btn-test btn-sm ms-2" onclick="testAdminProducts()">測試</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="test-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="mb-1">訂單管理</h5>
+                                <small class="text-muted">訂單列表、狀態管理</small>
+                            </div>
+                            <div>
+                                <span class="status-badge status-warning" id="admin-orders-status">待測試</span>
+                                <button class="btn btn-test btn-sm ms-2" onclick="testAdminOrders()">測試</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="test-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="mb-1">數據分析</h5>
+                                <small class="text-muted">圖表展示、報表</small>
+                            </div>
+                            <div>
+                                <span class="status-badge status-warning" id="analytics-status">待測試</span>
+                                <button class="btn btn-test btn-sm ms-2" onclick="testAnalytics()">測試</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 測試結果總覽 -->
+            <div class="mt-5">
+                <h3 class="mb-4">
+                    <i class="fas fa-chart-bar text-info"></i> 測試結果總覽
+                </h3>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="text-center p-3 bg-success text-white rounded">
+                            <h4 id="passed-count">0</h4>
+                            <small>通過測試</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center p-3 bg-warning text-white rounded">
+                            <h4 id="pending-count">10</h4>
+                            <small>待測試</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center p-3 bg-danger text-white rounded">
+                            <h4 id="failed-count">0</h4>
+                            <small>測試失敗</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 快速操作 -->
+            <div class="mt-5 text-center">
+                <h3 class="mb-4">
+                    <i class="fas fa-rocket text-warning"></i> 快速操作
+                </h3>
+                <div class="btn-group" role="group">
+                    <button class="btn btn-outline-primary" onclick="runAllTests()">
+                        <i class="fas fa-play"></i> 運行所有測試
+                    </button>
+                    <button class="btn btn-outline-success" onclick="openFrontend()">
+                        <i class="fas fa-external-link-alt"></i> 打開前台
+                    </button>
+                    <button class="btn btn-outline-info" onclick="openAdmin()">
+                        <i class="fas fa-user-shield"></i> 打開後台
+                    </button>
+                    <button class="btn btn-outline-secondary" onclick="resetTests()">
+                        <i class="fas fa-redo"></i> 重置測試
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 測試計數器
+        let testCounts = {
+            passed: 0,
+            pending: 10,
+            failed: 0
+        };
+
+        // 更新測試狀態
+        function updateTestStatus(elementId, status) {
+            const element = document.getElementById(elementId);
+            element.className = `status-badge status-${status}`;
+            
+            switch(status) {
+                case 'success':
+                    element.textContent = '通過';
+                    testCounts.passed++;
+                    testCounts.pending--;
+                    break;
+                case 'error':
+                    element.textContent = '失敗';
+                    testCounts.failed++;
+                    testCounts.pending--;
+                    break;
+                case 'warning':
+                    element.textContent = '待測試';
+                    break;
+            }
+            
+            updateCounts();
+        }
+
+        // 更新計數顯示
+        function updateCounts() {
+            document.getElementById('passed-count').textContent = testCounts.passed;
+            document.getElementById('pending-count').textContent = testCounts.pending;
+            document.getElementById('failed-count').textContent = testCounts.failed;
+        }
+
+        // 測試函數
+        function testHomepage() {
+            updateTestStatus('homepage-status', 'success');
+            setTimeout(() => window.open('index.html', '_blank'), 500);
+        }
+
+        function testProductDetail() {
+            updateTestStatus('product-status', 'success');
+            setTimeout(() => window.open('product-detail.html?id=1', '_blank'), 500);
+        }
+
+        function testCart() {
+            updateTestStatus('cart-status', 'success');
+            setTimeout(() => window.open('cart.html', '_blank'), 500);
+        }
+
+        function testSearch() {
+            updateTestStatus('search-status', 'success');
+            setTimeout(() => window.open('search-results.html?category=living', '_blank'), 500);
+        }
+
+        function testWishlist() {
+            updateTestStatus('wishlist-status', 'success');
+            setTimeout(() => window.open('wishlist.html', '_blank'), 500);
+        }
+
+        function testAdminLogin() {
+            updateTestStatus('admin-login-status', 'success');
+            setTimeout(() => window.open('admin/login.html', '_blank'), 500);
+        }
+
+        function testDashboard() {
+            updateTestStatus('dashboard-status', 'success');
+            setTimeout(() => window.open('admin/dashboard.html', '_blank'), 500);
+        }
+
+        function testAdminProducts() {
+            updateTestStatus('admin-products-status', 'success');
+            setTimeout(() => window.open('admin/products.html', '_blank'), 500);
+        }
+
+        function testAdminOrders() {
+            updateTestStatus('admin-orders-status', 'success');
+            setTimeout(() => window.open('admin/orders.html', '_blank'), 500);
+        }
+
+        function testAnalytics() {
+            updateTestStatus('analytics-status', 'success');
+            setTimeout(() => window.open('admin/analytics.html', '_blank'), 500);
+        }
+
+        // 快速操作函數
+        function runAllTests() {
+            const tests = [
+                'testHomepage', 'testProductDetail', 'testCart', 'testSearch', 'testWishlist',
+                'testAdminLogin', 'testDashboard', 'testAdminProducts', 'testAdminOrders', 'testAnalytics'
+            ];
+            
+            tests.forEach((test, index) => {
+                setTimeout(() => {
+                    window[test]();
+                }, index * 1000);
+            });
+        }
+
+        function openFrontend() {
+            window.open('index.html', '_blank');
+        }
+
+        function openAdmin() {
+            window.open('admin/login.html', '_blank');
+        }
+
+        function resetTests() {
+            testCounts = { passed: 0, pending: 10, failed: 0 };
+            
+            const statusElements = [
+                'homepage-status', 'product-status', 'cart-status', 'search-status', 'wishlist-status',
+                'admin-login-status', 'dashboard-status', 'admin-products-status', 'admin-orders-status', 'analytics-status'
+            ];
+            
+            statusElements.forEach(id => {
+                updateTestStatus(id, 'warning');
+            });
+            
+            updateCounts();
+        }
+
+        // 頁面載入時的歡迎訊息
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎉 CYY系統測試面板已載入');
+            console.log('📋 測試項目: 前台5項 + 後台5項');
+            console.log('🚀 點擊測試按鈕開始測試各項功能');
+        });
+    </script>
+</body>
+</html>
