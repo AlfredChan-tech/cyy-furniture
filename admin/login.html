@@ -15,503 +15,509 @@
             justify-content: center;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         .login-container {
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
             border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
             overflow: hidden;
             width: 100%;
-            max-width: 400px;
-            animation: slideIn 0.5s ease-out;
+            max-width: 900px;
+            min-height: 600px;
         }
-        
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .login-header {
+
+        .login-left {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 40px 30px;
-            text-align: center;
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
         }
-        
-        .login-header h1 {
-            margin: 0;
-            font-size: 2rem;
-            font-weight: 600;
+
+        .login-left::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+            animation: float 20s infinite linear;
         }
-        
-        .login-header p {
-            margin: 10px 0 0 0;
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-100px) rotate(360deg); }
+        }
+
+        .login-right {
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .brand-logo {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .brand-subtitle {
+            font-size: 1.2rem;
             opacity: 0.9;
-            font-size: 0.95rem;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 1;
         }
-        
-        .login-body {
-            padding: 40px 30px;
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            position: relative;
+            z-index: 1;
         }
-        
+
+        .feature-list li {
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .feature-list li i {
+            margin-right: 15px;
+            font-size: 1.2rem;
+        }
+
+        .login-form {
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .form-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .form-subtitle {
+            color: #6c757d;
+            margin-bottom: 40px;
+        }
+
         .form-floating {
             margin-bottom: 20px;
         }
-        
-        .form-floating .form-control {
+
+        .form-floating input {
             border: 2px solid #e9ecef;
             border-radius: 10px;
-            padding: 20px 15px 5px 15px;
+            padding: 12px 20px;
             height: 60px;
-            font-size: 16px;
             transition: all 0.3s ease;
         }
-        
-        .form-floating .form-control:focus {
+
+        .form-floating input:focus {
             border-color: #667eea;
             box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
         }
-        
+
         .form-floating label {
+            padding: 12px 20px;
             color: #6c757d;
-            font-weight: 500;
         }
-        
-        /* 修復密碼字段的label定位問題 */
-        .form-floating > .input-group {
-            position: relative;
-        }
-        
-        .form-floating > .input-group > .form-control {
-            padding: 20px 50px 5px 15px;
-        }
-        
-        .form-floating:focus-within label,
-        .form-floating > .input-group > .form-control:focus ~ label,
-        .form-floating > .input-group > .form-control:not(:placeholder-shown) ~ label {
-            opacity: 0.65;
-            transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
-        }
-        
-        /* 確保用戶名字段的label動畫也正常工作 */
-        .form-floating > .form-control:focus ~ label,
-        .form-floating > .form-control:not(:placeholder-shown) ~ label {
-            opacity: 0.65;
-            transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
-        }
-        
+
         .btn-login {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border: none;
             border-radius: 10px;
             padding: 15px;
-            font-size: 16px;
             font-weight: 600;
+            font-size: 1.1rem;
             color: white;
             width: 100%;
+            margin-bottom: 20px;
             transition: all 0.3s ease;
         }
-        
+
         .btn-login:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+            color: white;
         }
-        
-        .btn-login:active {
-            transform: translateY(0);
-        }
-        
+
         .btn-login:disabled {
-            background: #6c757d;
-            cursor: not-allowed;
+            opacity: 0.6;
             transform: none;
+            box-shadow: none;
         }
-        
-        .loading-spinner {
-            display: none;
-            width: 20px;
-            height: 20px;
-            border: 2px solid #ffffff;
-            border-top: 2px solid transparent;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-right: 10px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .error-message {
-            background: #f8d7da;
-            color: #721c24;
-            padding: 12px 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border: 1px solid #f5c6cb;
-            display: none;
-        }
-        
-        .success-message {
-            background: #d4edda;
-            color: #155724;
-            padding: 12px 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border: 1px solid #c3e6cb;
-            display: none;
-        }
-        
-        .remember-me {
+
+        .remember-forgot {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
-        
-        .remember-me input {
-            margin-right: 8px;
+
+        .form-check-input:checked {
+            background-color: #667eea;
+            border-color: #667eea;
         }
-        
-        .remember-me label {
-            font-size: 0.9rem;
-            color: #6c757d;
-            margin: 0;
-        }
-        
-        .login-footer {
-            text-align: center;
-            padding: 20px;
-            background: #f8f9fa;
-            border-top: 1px solid #e9ecef;
-        }
-        
-        .login-footer a {
+
+        .forgot-link {
             color: #667eea;
             text-decoration: none;
             font-size: 0.9rem;
         }
-        
-        .login-footer a:hover {
+
+        .forgot-link:hover {
+            color: #764ba2;
             text-decoration: underline;
         }
-        
-        .password-toggle {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
+
+        .back-home {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .back-home a {
             color: #6c757d;
-            cursor: pointer;
-            z-index: 10;
-            border-radius: 4px;
-            width: 30px;
-            height: 30px;
-            display: flex;
+            text-decoration: none;
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
+            transition: color 0.3s ease;
         }
-        
-        .password-toggle:hover {
+
+        .back-home a:hover {
             color: #667eea;
-            background: rgba(102, 126, 234, 0.1);
         }
-        
-        .input-group {
-            position: relative;
+
+        .back-home a i {
+            margin-right: 8px;
         }
-        
-        @media (max-width: 576px) {
+
+        .alert {
+            border: none;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .loading-spinner {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
             .login-container {
                 margin: 20px;
-                border-radius: 15px;
+                min-height: auto;
             }
             
-            .login-header {
-                padding: 30px 20px;
+            .login-left {
+                padding: 40px 30px;
+                text-align: center;
             }
             
-            .login-body {
-                padding: 30px 20px;
+            .login-right {
+                padding: 40px 30px;
+            }
+            
+            .brand-logo {
+                font-size: 2.5rem;
+            }
+            
+            .feature-list {
+                display: none;
             }
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-header">
-            <h1>CYY管理後台</h1>
-            <p>請登錄您的管理員帳戶</p>
-        </div>
-        
-        <div class="login-body">
-            <div class="error-message" id="errorMessage"></div>
-            <div class="success-message" id="successMessage"></div>
-            
-            <form id="loginForm">
-                <div class="form-floating">
-                    <input type="text" class="form-control" id="username" name="username" placeholder=" " required>
-                    <label for="username">
-                        <i class="fas fa-user me-2"></i>用戶名
-                    </label>
-                </div>
-                
-                <div class="form-floating">
-                    <div class="input-group">
-                        <input type="password" class="form-control" id="password" name="password" placeholder=" " required>
-                        <button type="button" class="password-toggle" id="passwordToggle">
-                            <i class="fas fa-eye"></i>
-                        </button>
+    <div class="container-fluid">
+        <div class="login-container">
+            <div class="row g-0 h-100">
+                <!-- 左側品牌區域 -->
+                <div class="col-lg-6 d-none d-lg-block">
+                    <div class="login-left h-100">
+                        <div class="brand-logo">CYY</div>
+                        <div class="brand-subtitle">奢華家具管理系統</div>
+                        <ul class="feature-list">
+                            <li>
+                                <i class="fas fa-chart-line"></i>
+                                <span>實時銷售數據分析</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-box"></i>
+                                <span>智能庫存管理</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-users"></i>
+                                <span>客戶關係管理</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-shopping-cart"></i>
+                                <span>訂單處理系統</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-shield-alt"></i>
+                                <span>安全數據保護</span>
+                            </li>
+                        </ul>
                     </div>
-                    <label for="password">
-                        <i class="fas fa-lock me-2"></i>密碼
-                    </label>
                 </div>
-                
-                <div class="remember-me">
-                    <input type="checkbox" id="rememberMe" name="rememberMe">
-                    <label for="rememberMe">記住我</label>
+
+                <!-- 右側登錄表單 -->
+                <div class="col-lg-6">
+                    <div class="login-right h-100">
+                        <div class="login-form mx-auto">
+                            <h1 class="form-title">管理員登錄</h1>
+                            <p class="form-subtitle">請輸入您的管理員帳號和密碼</p>
+
+                            <!-- 錯誤訊息 -->
+                            <div class="alert alert-danger d-none" id="errorAlert">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                <span id="errorMessage"></span>
+                            </div>
+
+                            <!-- 成功訊息 -->
+                            <div class="alert alert-success d-none" id="successAlert">
+                                <i class="fas fa-check-circle me-2"></i>
+                                <span id="successMessage"></span>
+                            </div>
+
+                            <form id="loginForm">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="username" name="username" placeholder="管理員帳號" required>
+                                    <label for="username">
+                                        <i class="fas fa-user me-2"></i>管理員帳號
+                                    </label>
+                                </div>
+
+                                <div class="form-floating">
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="密碼" required>
+                                    <label for="password">
+                                        <i class="fas fa-lock me-2"></i>密碼
+                                    </label>
+                                </div>
+
+                                <div class="remember-forgot">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="rememberMe" name="rememberMe">
+                                        <label class="form-check-label" for="rememberMe">
+                                            記住我
+                                        </label>
+                                    </div>
+                                    <a href="#" class="forgot-link" onclick="showForgotPassword()">忘記密碼？</a>
+                                </div>
+
+                                <button type="submit" class="btn btn-login" id="loginBtn">
+                                    <span class="btn-text">登錄</span>
+                                    <span class="loading-spinner">
+                                        <i class="fas fa-spinner fa-spin"></i> 登錄中...
+                                    </span>
+                                </button>
+                            </form>
+
+                            <div class="back-home">
+                                <a href="../index.html">
+                                    <i class="fas fa-arrow-left"></i>
+                                    返回前台網站
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                
-                <button type="submit" class="btn btn-login" id="loginBtn">
-                    <div class="loading-spinner" id="loadingSpinner"></div>
-                    <span id="loginText">登錄</span>
-                </button>
-            </form>
-        </div>
-        
-        <div class="login-footer">
-            <a href="#" id="forgotPassword">忘記密碼？</a>
+            </div>
         </div>
     </div>
 
+    <!-- 忘記密碼模態框 -->
+    <div class="modal fade" id="forgotPasswordModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius: 15px; border: none;">
+                <div class="modal-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 15px 15px 0 0;">
+                    <h5 class="modal-title">
+                        <i class="fas fa-key me-2"></i>重設密碼
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" style="padding: 30px;">
+                    <p class="text-muted mb-4">請輸入您的管理員帳號，我們將發送重設密碼的連結到您的郵箱。</p>
+                    <form id="forgotPasswordForm">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="resetUsername" placeholder="管理員帳號" required>
+                            <label for="resetUsername">
+                                <i class="fas fa-user me-2"></i>管理員帳號
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; border-radius: 10px; padding: 12px;">
+                            <i class="fas fa-paper-plane me-2"></i>發送重設連結
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        class AdminLogin {
-            constructor() {
-                this.apiBase = 'http://localhost:8080/api';
-                this.init();
+        // 登錄表單處理
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+            
+            // 驗證輸入
+            if (!username || !password) {
+                showError('請輸入帳號和密碼');
+                return;
             }
-
-            init() {
-                this.setupEventListeners();
-                this.checkExistingLogin();
-            }
-
-            setupEventListeners() {
-                // 登錄表單提交
-                document.getElementById('loginForm').addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    this.handleLogin();
-                });
-
-                // 密碼顯示/隱藏切換
-                document.getElementById('passwordToggle').addEventListener('click', () => {
-                    this.togglePasswordVisibility();
-                });
-
-                // 忘記密碼
-                document.getElementById('forgotPassword').addEventListener('click', (e) => {
-                    e.preventDefault();
-                    this.handleForgotPassword();
-                });
-
-                // 回車鍵提交
-                document.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') {
-                        document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+            
+            // 顯示載入狀態
+            showLoading(true);
+            hideAlerts();
+            
+            // 模擬登錄請求
+            setTimeout(() => {
+                // 這裡應該是實際的登錄API調用
+                if (username === 'admin' && password === 'admin123') {
+                    showSuccess('登錄成功，正在跳轉...');
+                    
+                    // 保存登錄狀態
+                    if (rememberMe) {
+                        localStorage.setItem('adminRememberMe', 'true');
+                        localStorage.setItem('adminUsername', username);
                     }
-                });
-            }
-
-            // 檢查現有登錄狀態
-            checkExistingLogin() {
-                const token = localStorage.getItem('adminToken');
-                if (token) {
-                    this.verifyToken(token);
-                }
-            }
-
-            // 驗證令牌
-            async verifyToken(token) {
-                try {
-                    const response = await fetch(`${this.apiBase}/auth/verify`, {
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                        }
-                    });
-
-                    if (response.ok) {
-                        this.showSuccess('已登錄，正在跳轉...');
-                        setTimeout(() => {
-                            window.location.href = 'index.html';
-                        }, 1000);
-                    }
-                } catch (error) {
-                    // 令牌無效，清除
-                    localStorage.removeItem('adminToken');
-                }
-            }
-
-            // 處理登錄
-            async handleLogin() {
-                const form = document.getElementById('loginForm');
-                const formData = new FormData(form);
-                const username = formData.get('username');
-                const password = formData.get('password');
-                const rememberMe = formData.get('rememberMe') === 'on';
-
-                if (!username || !password) {
-                    this.showError('請填寫完整的登錄信息');
-                    return;
-                }
-
-                this.setLoading(true);
-                this.hideMessages();
-
-                try {
-                    const response = await fetch(`${this.apiBase}/auth/login`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            username,
-                            password
-                        })
-                    });
-
-                    if (response.ok) {
-                        const data = await response.json();
-                        
-                        // 保存令牌
-                        if (rememberMe) {
-                            localStorage.setItem('adminToken', data.token);
-                        } else {
-                            sessionStorage.setItem('adminToken', data.token);
-                        }
-
-                        this.showSuccess('登錄成功，正在跳轉...');
-                        
-                        setTimeout(() => {
-                            window.location.href = 'index.html';
-                        }, 1500);
-                    } else {
-                        const errorData = await response.json();
-                        this.showError(errorData.message || '登錄失敗，請檢查用戶名和密碼');
-                    }
-                } catch (error) {
-                    console.error('Login error:', error);
-                    // 在開發環境中，允許使用預設帳戶登錄
-                    if ((username === 'admin032630' && password === 'admin123') || 
-                        (username === 'CYY302630' && password === '1')) {
-                        this.handleMockLogin();
-                    } else {
-                        this.showError('登錄失敗，請檢查用戶名和密碼');
-                    }
-                } finally {
-                    this.setLoading(false);
-                }
-            }
-
-            // 處理模擬登錄（開發用）
-            handleMockLogin() {
-                const mockToken = 'mock-admin-token-' + Date.now();
-                const rememberMe = document.getElementById('rememberMe').checked;
-                const username = document.getElementById('username').value;
-                
-                // 根據"記住我"選擇保存位置
-                if (rememberMe) {
-                    localStorage.setItem('adminToken', mockToken);
-                    localStorage.setItem('adminUsername', username);
-                } else {
-                    sessionStorage.setItem('adminToken', mockToken);
+                    sessionStorage.setItem('adminLoggedIn', 'true');
                     sessionStorage.setItem('adminUsername', username);
-                }
-                
-                this.showSuccess('登錄成功，正在跳轉...');
-                
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 1500);
-            }
-
-            // 切換密碼可見性
-            togglePasswordVisibility() {
-                const passwordInput = document.getElementById('password');
-                const toggleButton = document.getElementById('passwordToggle');
-                const icon = toggleButton.querySelector('i');
-
-                if (passwordInput.type === 'password') {
-                    passwordInput.type = 'text';
-                    icon.classList.remove('fa-eye');
-                    icon.classList.add('fa-eye-slash');
+                    
+                    // 跳轉到儀表板
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1500);
                 } else {
-                    passwordInput.type = 'password';
-                    icon.classList.remove('fa-eye-slash');
-                    icon.classList.add('fa-eye');
+                    showError('帳號或密碼錯誤，請重試');
+                    showLoading(false);
                 }
+            }, 2000);
+        });
+
+        // 忘記密碼處理
+        document.getElementById('forgotPasswordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('resetUsername').value;
+            
+            if (!username) {
+                alert('請輸入管理員帳號');
+                return;
             }
+            
+            // 模擬發送重設郵件
+            alert('重設密碼連結已發送到您的郵箱，請查收。');
+            
+            // 關閉模態框
+            const modal = bootstrap.Modal.getInstance(document.getElementById('forgotPasswordModal'));
+            modal.hide();
+        });
 
-            // 處理忘記密碼
-            handleForgotPassword() {
-                alert('請聯繫系統管理員重置密碼');
-            }
+        // 顯示錯誤訊息
+        function showError(message) {
+            const errorAlert = document.getElementById('errorAlert');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            errorMessage.textContent = message;
+            errorAlert.classList.remove('d-none');
+            
+            // 3秒後自動隱藏
+            setTimeout(() => {
+                errorAlert.classList.add('d-none');
+            }, 3000);
+        }
 
-            // 設置載入狀態
-            setLoading(loading) {
-                const btn = document.getElementById('loginBtn');
-                const spinner = document.getElementById('loadingSpinner');
-                const text = document.getElementById('loginText');
+        // 顯示成功訊息
+        function showSuccess(message) {
+            const successAlert = document.getElementById('successAlert');
+            const successMessage = document.getElementById('successMessage');
+            
+            successMessage.textContent = message;
+            successAlert.classList.remove('d-none');
+        }
 
-                if (loading) {
-                    btn.disabled = true;
-                    spinner.style.display = 'inline-block';
-                    text.textContent = '登錄中...';
-                } else {
-                    btn.disabled = false;
-                    spinner.style.display = 'none';
-                    text.textContent = '登錄';
-                }
-            }
+        // 隱藏所有警告訊息
+        function hideAlerts() {
+            document.getElementById('errorAlert').classList.add('d-none');
+            document.getElementById('successAlert').classList.add('d-none');
+        }
 
-            // 顯示錯誤消息
-            showError(message) {
-                const errorDiv = document.getElementById('errorMessage');
-                errorDiv.textContent = message;
-                errorDiv.style.display = 'block';
-                
-                setTimeout(() => {
-                    errorDiv.style.display = 'none';
-                }, 5000);
-            }
-
-            // 顯示成功消息
-            showSuccess(message) {
-                const successDiv = document.getElementById('successMessage');
-                successDiv.textContent = message;
-                successDiv.style.display = 'block';
-            }
-
-            // 隱藏所有消息
-            hideMessages() {
-                document.getElementById('errorMessage').style.display = 'none';
-                document.getElementById('successMessage').style.display = 'none';
+        // 顯示/隱藏載入狀態
+        function showLoading(show) {
+            const loginBtn = document.getElementById('loginBtn');
+            const btnText = loginBtn.querySelector('.btn-text');
+            const loadingSpinner = loginBtn.querySelector('.loading-spinner');
+            
+            if (show) {
+                btnText.style.display = 'none';
+                loadingSpinner.style.display = 'inline';
+                loginBtn.disabled = true;
+            } else {
+                btnText.style.display = 'inline';
+                loadingSpinner.style.display = 'none';
+                loginBtn.disabled = false;
             }
         }
 
-        // 初始化登錄頁面
-        document.addEventListener('DOMContentLoaded', () => {
-            new AdminLogin();
+        // 顯示忘記密碼模態框
+        function showForgotPassword() {
+            const modal = new bootstrap.Modal(document.getElementById('forgotPasswordModal'));
+            modal.show();
+        }
+
+        // 頁面載入時檢查記住我狀態
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('adminRememberMe') === 'true') {
+                document.getElementById('rememberMe').checked = true;
+                document.getElementById('username').value = localStorage.getItem('adminUsername') || '';
+            }
+            
+            // 如果已經登錄，直接跳轉到儀表板
+            if (sessionStorage.getItem('adminLoggedIn') === 'true') {
+                window.location.href = 'dashboard.html';
+            }
+        });
+
+        // 鍵盤事件處理
+        document.addEventListener('keydown', function(e) {
+            // Enter鍵提交表單
+            if (e.key === 'Enter' && e.target.tagName !== 'BUTTON') {
+                const form = e.target.closest('form');
+                if (form) {
+                    form.dispatchEvent(new Event('submit'));
+                }
+            }
+        });
+
+        // 輸入框焦點效果
+        document.querySelectorAll('.form-floating input').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'translateY(-2px)';
+                this.parentElement.style.boxShadow = '0 5px 15px rgba(0,0,0,0.1)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'translateY(0)';
+                this.parentElement.style.boxShadow = 'none';
+            });
         });
     </script>
 </body>
-</html> 
+</html>

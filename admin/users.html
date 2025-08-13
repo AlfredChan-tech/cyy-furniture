@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYY家具 - 用戶管理</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/admin-style.css" rel="stylesheet">
+    <style>
+        .user-table {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .user-status {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .status-active { background-color: #d4edda; color: #155724; }
+        .status-inactive { background-color: #f8d7da; color: #721c24; }
+        .status-suspended { background-color: #fff3cd; color: #856404; }
+        
+        .user-role {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .role-admin { background-color: #667eea; color: white; }
+        .role-customer { background-color: #a8e6cf; color: #333; }
+        .role-vip { background-color: #ffd93d; color: #333; }
+        
+        .user-summary {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .summary-card {
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .summary-card:hover {
+            transform: translateY(-3px);
+        }
+        
+        .summary-card.total { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .summary-card.active { background: linear-gradient(135deg, #a8e6cf 0%, #88d8a3 100%); color: #333; }
+        .summary-card.new { background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%); color: #333; }
+        .summary-card.vip { background: linear-gradient(135deg, #ffd93d 0%, #ffb347 100%); color: #333; }
+        
+        .search-filters {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .modal-content {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px 15px 0 0;
+        }
+        
+        .user-activity {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .activity-item {
+            border-left: 3px solid #667eea;
+            padding-left: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .activity-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .stat-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- 側邊欄 -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h4 class="text-white">CYY管理後台</h4>
+            </div>
+            <ul class="sidebar-nav">
+                <li class="nav-item">
+                    <a href="dashboard.html" class="nav-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>儀表板</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="products.html" class="nav-link">
+                        <i class="fas fa-box"></i>
+                        <span>產品管理</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="orders.html" class="nav-link">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>訂單管理</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="users.html" class="nav-link active">
+                        <i class="fas fa-users"></i>
+                        <span>用戶管理</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="analytics.html" class="nav-link">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>數據分析</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>系統設置</span>
+                    </a>
+                </li>
+                <li class="nav-item mt-auto">
+                    <a href="../index.html" class="nav-link">
+                        <i class="fas fa-home"></i>
+                        <span>返回前台</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="login.html" class="nav-link">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>退出登錄</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- 主內容區域 -->
+        <div class="main-content">
+            <!-- 頂部導航 -->
+            <header class="topbar">
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-link sidebar-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h2 class="ms-3 mb-0">用戶管理</h2>
+                </div>
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-outline-primary me-3" onclick="exportUsers()">
+                        <i class="fas fa-download"></i> 導出用戶
+                    </button>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user"></i> 管理員
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="profile.html">個人資料</a></li>
+                            <li><a class="dropdown-item" href="settings.html">設置</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="login.html">退出登錄</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </header>
+
+            <!-- 用戶管理內容 -->
+            <div class="content-area">
+                <!-- 用戶統計 -->
+                <div class="user-summary">
+                    <h5 class="mb-4">
+                        <i class="fas fa-chart-pie text-primary"></i> 用戶統計
+                    </h5>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="summary-card total">
+                                <h4 class="mb-2">3,456</h4>
+                                <p class="mb-0">總用戶數</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="summary-card active">
+                                <h4 class="mb-2">3,201</h4>
+                                <p class="mb-0">活躍用戶</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="summary-card new">
+                                <h4 class="mb-2">89</h4>
+                                <p class="mb-0">本月新增</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="summary-card vip">
+                                <h4 class="mb-2">156</h4>
+                                <p class="mb-0">VIP用戶</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 搜索和篩選 -->
+                <div class="search-filters">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                <input type="text" class="form-control" placeholder="搜索用戶名稱或郵箱..." id="searchInput">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <select class="form-select" id="statusFilter">
+                                <option value="">所有狀態</option>
+                                <option value="active">活躍</option>
+                                <option value="inactive">非活躍</option>
+                                <option value="suspended">已停用</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select class="form-select" id="roleFilter">
+                                <option value="">所有角色</option>
+                                <option value="customer">一般用戶</option>
+                                <option value="vip">VIP用戶</option>
+                                <option value="admin">管理員</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="date" class="form-control" id="registerDateFrom" placeholder="註冊日期從">
+                        </div>
+                        <div class="col-md-2">
+                            <input type="date" class="form-control" id="registerDateTo" placeholder="註冊日期到">
+                        </div>
+                        <div class="col-md-1">
+                            <button class="btn btn-outline-primary w-100" onclick="filterUsers()">
+                                <i class="fas fa-filter"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 用戶列表 -->
+                <div class="user-table">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="mb-0">
+                            <i class="fas fa-users text-primary"></i> 用戶列表
+                            <span class="badge bg-secondary ms-2" id="userCount">3,456</span>
+                        </h5>
+                        <div class="btn-group">
+                            <button class="btn btn-outline-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+                                批量操作
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#" onclick="batchUpdateStatus('active')">啟用用戶</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="batchUpdateStatus('suspended')">停用用戶</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#" onclick="batchSendEmail()">發送郵件</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="batchExport()">導出選中用戶</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th width="5%">
+                                        <input type="checkbox" class="form-check-input" id="selectAll">
+                                    </th>
+                                    <th width="10%">頭像</th>
+                                    <th width="15%">用戶信息</th>
+                                    <th width="15%">聯絡方式</th>
+                                    <th width="10%">角色</th>
+                                    <th width="10%">狀態</th>
+                                    <th width="10%">註冊時間</th>
+                                    <th width="10%">最後登錄</th>
+                                    <th width="10%">訂單數</th>
+                                    <th width="5%">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="userTableBody">
+                                <tr>
+                                    <td><input type="checkbox" class="form-check-input user-checkbox" data-id="1"></td>
+                                    <td>
+                                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                                             alt="張小明" class="user-avatar">
+                                    </td>
+                                    <td>
+                                        <strong>張小明</strong>
+                                        <br><small class="text-muted">ID: 001</small>
+                                        <br><small class="text-muted">男, 28歲</small>
+                                    </td>
+                                    <td>
+                                        <div>0912-345-678</div>
+                                        <small class="text-muted">zhang@example.com</small>
+                                    </td>
+                                    <td><span class="user-role role-vip">VIP用戶</span></td>
+                                    <td><span class="user-status status-active">活躍</span></td>
+                                    <td>
+                                        <small>2023-06-15</small>
+                                    </td>
+                                    <td>
+                                        <small>2024-01-15</small>
+                                        <br><small class="text-muted">14:30</small>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-primary">12</span>
+                                        <br><small class="text-muted">NT$ 428,600</small>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+                                                <i class="fas fa-cog"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="#" onclick="viewUser(1)">查看詳情</a></li>
+                                                <li><a class="dropdown-item" href="#" onclick="editUser(1)">編輯用戶</a></li>
+                                                <li><a class="dropdown-item" href="#" onclick="viewOrders(1)">查看訂單</a></li>
+                                                <li><hr class="dropdown-divider"></li>
+                                                <li><a class="dropdown-item" href="#" onclick="sendMessage(1)">發送消息</a></li>
+                                                <li><a class="dropdown-item text-warning" href="#" onclick="suspendUser(1)">停用用戶</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="form-check-input user-checkbox" data-id="2"></td>
+                                    <td>
+                                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                                             alt="李小華" class="user-avatar">
+                                    </td>
+                                    <td>
+                                        <strong>李小華</strong>
+                                        <br><small class="text-muted">ID: 002</small>
+                                        <br><small class="text-muted">女, 25歲</small>
+                                    </td>
+                                    <td>
+                                        <div>0987-654-321</div>
+                                        <small class="text-muted">li@example.com</small>
+                                    </td>
+                                    <td><span class="user-role role-customer">一般用戶</span></td>
+                                    <td><span class="user-status status-active">活躍</span></td>
+                                    <td>
+                                        <small>2023-08-20</small>
+                                    </td>
+                                    <td>
+                                        <small>2024-01-14</small>
+                                        <br><small class="text-muted">09:15</small>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-success">3</span>
+                                        <br><small class="text-muted">NT$ 89,300</small>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+                                                <i class="fas fa-cog"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="#" onclick="viewUser(2)">查看詳情</a></li>
+                                                <li><a class="dropdown-item" href="#" onclick="editUser(2)">編輯用戶</a></li>
+                                                <li><a class="dropdown-item" href="#" onclick="viewOrders(2)">查看訂單</a></li>
+                                                <li><hr class="dropdown-divider"></li>
+                                                <li><a class="dropdown-item" href="#" onclick="sendMessage(2)">發送消息</a></li>
+                                                <li><a class="dropdown-item text-warning" href="#" onclick="suspendUser(2)">停用用戶</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="form-check-input user-checkbox" data-id="3"></td>
+                                    <td>
+                                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                                             alt="王大明" class="user-avatar">
+                                    </td>
+                                    <td>
+                                        <strong>王大明</strong>
+                                        <br><small class="text-muted">ID: 003</small>
+                                        <br><small class="text-muted">男, 35歲</small>
+                                    </td>
+                                    <td>
+                                        <div>0955-123-456</div>
+                                        <small class="text-muted">wang@example.com</small>
+                                    </td>
+                                    <td><span class="user-role role-customer">一般用戶</span></td>
+                                    <td><span class="user-status status-inactive">非活躍</span></td>
+                                    <td>
+                                        <small>2023-03-10</small>
+                                    </td>
+                                    <td>
+                                        <small>2023-12-05</small>
+                                        <br><small class="text-muted">16:45</small>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-warning">1</span>
+                                        <br><small class="text-muted">NT$ 45,200</small>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+                                                <i class="fas fa-cog"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="#" onclick="viewUser(3)">查看詳情</a></li>
+                                                <li><a class="dropdown-item" href="#" onclick="editUser(3)">編輯用戶</a></li>
+                                                <li><a class="dropdown-item" href="#" onclick="viewOrders(3)">查看訂單</a></li>
+                                                <li><hr class="dropdown-divider"></li>
+                                                <li><a class="dropdown-item" href="#" onclick="sendMessage(3)">發送消息</a></li>
+                                                <li><a class="dropdown-item text-success" href="#" onclick="activateUser(3)">激活用戶</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 分頁 -->
+                    <nav aria-label="用戶分頁" class="mt-4">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1">上一頁</a>
+                            </li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">下一頁</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 用戶詳情模態框 -->
+    <div class="modal fade" id="userDetailModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-user"></i> 用戶詳情 - <span id="userDetailName">張小明</span>
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <!-- 用戶基本信息 -->
+                            <div class="text-center mb-4">
+                                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                                     alt="用戶頭像" class="rounded-circle mb-3" style="width: 100px; height: 100px; object-fit: cover;">
+                                <h5>張小明</h5>
+                                <span class="user-role role-vip">VIP用戶</span>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <h6>基本信息</h6>
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td>用戶ID:</td>
+                                        <td>001</td>
+                                    </tr>
+                                    <tr>
+                                        <td>性別:</td>
+                                        <td>男</td>
+                                    </tr>
+                                    <tr>
+                                        <td>年齡:</td>
+                                        <td>28歲</td>
+                                    </tr>
+                                    <tr>
+                                        <td>電話:</td>
+                                        <td>0912-345-678</td>
+                                    </tr>
+                                    <tr>
+                                        <td>郵箱:</td>
+                                        <td>zhang@example.com</td>
+                                    </tr>
+                                    <tr>
+                                        <td>地址:</td>
+                                        <td>台北市信義區松仁路100號</td>
+                                    </tr>
+                                    <tr>
+                                        <td>註冊時間:</td>
+                                        <td>2023-06-15</td>
+                                    </tr>
+                                    <tr>
+                                        <td>最後登錄:</td>
+                                        <td>2024-01-15 14:30</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-8">
+                            <!-- 統計信息 -->
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <h4 class="text-primary">12</h4>
+                                    <small>總訂單數</small>
+                                </div>
+                                <div class="stat-item">
+                                    <h4 class="text-success">NT$ 428,600</h4>
+                                    <small>消費總額</small>
+                                </div>
+                                <div class="stat-item">
+                                    <h4 class="text-info">NT$ 35,717</h4>
+                                    <small>平均訂單金額</small>
+                                </div>
+                                <div class="stat-item">
+                                    <h4 class="text-warning">85%</h4>
+                                    <small>訂單完成率</small>
+                                </div>
+                            </div>
+                            
+                            <!-- 最近活動 -->
+                            <div class="mt-4">
+                                <h6>最近活動</h6>
+                                <div class="user-activity">
+                                    <div class="activity-item">
+                                        <div class="fw-bold">完成訂單 #ORD001</div>
+                                        <small class="text-muted">購買現代簡約沙發 - 2024-01-15 14:30</small>
+                                    </div>
+                                    <div class="activity-item">
+                                        <div class="fw-bold">登錄系統</div>
+                                        <small class="text-muted">從台北市信義區登錄 - 2024-01-15 14:25</small>
+                                    </div>
+                                    <div class="activity-item">
+                                        <div class="fw-bold">瀏覽產品</div>
+                                        <small class="text-muted">查看臥室家具分類 - 2024-01-15 14:20</small>
+                                    </div>
+                                    <div class="activity-item">
+                                        <div class="fw-bold">加入收藏</div>
+                                        <small class="text-muted">收藏實木雙人床架 - 2024-01-14 16:45</small>
+                                    </div>
+                                    <div class="activity-item">
+                                        <div class="fw-bold">評價商品</div>
+                                        <small class="text-muted">對橡木餐桌給予5星評價 - 2024-01-13 10:30</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 訂單歷史 -->
+                            <div class="mt-4">
+                                <h6>最近訂單</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>訂單編號</th>
+                                                <th>商品</th>
+                                                <th>金額</th>
+                                                <th>狀態</th>
+                                                <th>日期</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>#ORD001</td>
+                                                <td>現代簡約沙發</td>
+                                                <td>NT$ 35,800</td>
+                                                <td><span class="badge bg-success">已完成</span></td>
+                                                <td>2024-01-15</td>
+                                            </tr>
+                                            <tr>
+                                                <td>#ORD002</td>
+                                                <td>橡木餐桌</td>
+                                                <td>NT$ 45,200</td>
+                                                <td><span class="badge bg-success">已完成</span></td>
+                                                <td>2024-01-10</td>
+                                            </tr>
+                                            <tr>
+                                                <td>#ORD003</td>
+                                                <td>現代書櫃</td>
+                                                <td>NT$ 15,800</td>
+                                                <td><span class="badge bg-success">已完成</span></td>
+                                                <td>2024-01-05</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                    <button type="button" class="btn btn-info" onclick="sendMessage()">
+                        <i class="fas fa-envelope"></i> 發送消息
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="editUser()">
+                        <i class="fas fa-edit"></i> 編輯用戶
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/admin-main.js"></script>
+    <script>
+        // 用戶管理功能
+        function filterUsers() {
+            const search = document.getElementById('searchInput').value;
+            const status = document.getElementById('statusFilter').value;
+            const role = document.getElementById('roleFilter').value;
+            const dateFrom = document.getElementById('registerDateFrom').value;
+            const dateTo = document.getElementById('registerDateTo').value;
+            
+            console.log('篩選用戶:', { search, status, role, dateFrom, dateTo });
+            // 這裡可以添加AJAX調用來篩選用戶
+        }
+
+        function viewUser(userId) {
+            console.log('查看用戶:', userId);
+            // 載入用戶詳情並顯示模態框
+            const modal = new bootstrap.Modal(document.getElementById('userDetailModal'));
+            modal.show();
+        }
+
+        function editUser(userId) {
+            console.log('編輯用戶:', userId);
+            // 跳轉到用戶編輯頁面或打開編輯模態框
+        }
+
+        function viewOrders(userId) {
+            console.log('查看用戶訂單:', userId);
+            // 跳轉到訂單頁面並篩選該用戶的訂單
+            window.location.href = `orders.html?user=${userId}`;
+        }
+
+        function sendMessage(userId) {
+            console.log('發送消息給用戶:', userId);
+            // 打開消息發送界面
+        }
+
+        function suspendUser(userId) {
+            if (confirm('確定要停用這個用戶嗎？')) {
+                console.log('停用用戶:', userId);
+                // 發送停用請求
+            }
+        }
+
+        function activateUser(userId) {
+            console.log('激活用戶:', userId);
+            // 發送激活請求
+        }
+
+        function exportUsers() {
+            console.log('導出用戶數據');
+            // 導出功能
+        }
+
+        function batchUpdateStatus(status) {
+            const selected = document.querySelectorAll('.user-checkbox:checked');
+            if (selected.length === 0) {
+                alert('請先選擇要操作的用戶');
+                return;
+            }
+            
+            console.log('批量更新用戶狀態:', status, selected.length);
+            // 批量更新狀態
+        }
+
+        function batchSendEmail() {
+            const selected = document.querySelectorAll('.user-checkbox:checked');
+            if (selected.length === 0) {
+                alert('請先選擇要發送郵件的用戶');
+                return;
+            }
+            
+            console.log('批量發送郵件:', selected.length);
+            // 批量發送郵件
+        }
+
+        function batchExport() {
+            const selected = document.querySelectorAll('.user-checkbox:checked');
+            if (selected.length === 0) {
+                alert('請先選擇要導出的用戶');
+                return;
+            }
+            
+            console.log('批量導出用戶:', selected.length);
+            // 批量導出
+        }
+
+        // 全選功能
+        document.getElementById('selectAll').addEventListener('change', function() {
+            const checkboxes = document.querySelectorAll('.user-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+            });
+        });
+
+        // 實時更新用戶統計
+        function updateUserStats() {
+            // 這裡可以添加AJAX調用來獲取實時統計數據
+            console.log('更新用戶統計...');
+        }
+
+        // 每30秒更新一次統計
+        setInterval(updateUserStats, 30000);
+    </script>
+</body>
+</html>

@@ -1,3 +1,20 @@
+/**
+ * CYY家具後台管理系統 - 主要JavaScript文件
+ * 包含通用功能、導航控制、權限檢查等
+ */
+
+// 全局配置
+const ADMIN_CONFIG = {
+    apiBaseUrl: '/api/admin',
+    sessionTimeout: 30 * 60 * 1000, // 30分鐘
+    autoSaveInterval: 5 * 60 * 1000, // 5分鐘
+    notificationDuration: 5000 // 5秒
+};
+
+// 全局變量
+let currentUser = null;
+let sessionTimer = null;
+
 // 後台管理系統主要JavaScript文件
 class AdminDashboard {
     constructor() {

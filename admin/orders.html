@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYY家具 - 訂單管理</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/admin-style.css" rel="stylesheet">
+    <style>
+        .order-table {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .order-status {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .status-pending { background-color: #fff3cd; color: #856404; }
+        .status-paid { background-color: #d4edda; color: #155724; }
+        .status-shipped { background-color: #cce5ff; color: #004085; }
+        .status-delivered { background-color: #e2e3e5; color: #383d41; }
+        .status-cancelled { background-color: #f8d7da; color: #721c24; }
+        
+        .payment-status {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .payment-pending { background-color: #ffeaa7; color: #d63031; }
+        .payment-completed { background-color: #a8e6cf; color: #00b894; }
+        .payment-failed { background-color: #ff7675; color: #fff; }
+        
+        .order-summary {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .summary-card {
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .summary-card:hover {
+            transform: translateY(-3px);
+        }
+        
+        .summary-card.total { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .summary-card.pending { background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%); color: #333; }
+        .summary-card.completed { background: linear-gradient(135deg, #a8e6cf 0%, #88d8a3 100%); color: #333; }
+        .summary-card.cancelled { background: linear-gradient(135deg, #ff7675 0%, #fd79a8 100%); color: white; }
+        
+        .search-filters {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .modal-content {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px 15px 0 0;
+        }
+        
+        .order-detail-item {
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+        }
+        
+        .order-detail-item:last-child {
+            border-bottom: none;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #dee2e6;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -23px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #667eea;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px #667eea;
+        }
+        
+        .timeline-item.completed::before {
+            background: #28a745;
+            box-shadow: 0 0 0 2px #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- 側邊欄 -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h4 class="text-white">CYY管理後台</h4>
+            </div>
+            <ul class="sidebar-nav">
+                <li class="nav-item">
+                    <a href="dashboard.html" class="nav-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>儀表板</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="products.html" class="nav-link">
+                        <i class="fas fa-box"></i>
+                        <span>產品管理</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="orders.html" class="nav-link active">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>訂單管理</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="users.html" class="nav-link">
+                        <i class="fas fa-users"></i>
+                        <span>用戶管理</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="analytics.html" class="nav-link">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>數據分析</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>系統設置</span>
+                    </a>
+                </li>
+                <li class="nav-item mt-auto">
+                    <a href="../index.html" class="nav-link">
+                        <i class="fas fa-home"></i>
+                        <span>返回前台</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="login.html" class="nav-link">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>退出登錄</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- 主內容區域 -->
+        <div class="main-content">
+            <!-- 頂部導航 -->
+            <header class="topbar">
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-link sidebar-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h2 class="ms-3 mb-0">訂單管理</h2>
+                </div>
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-outline-primary me-3" onclick="exportOrders()">
+                        <i class="fas fa-download"></i> 導出訂單
+                    </button>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user"></i> 管理員
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="profile.html">個人資料</a></li>
+                            <li><a class="dropdown-item" href="settings.html">設置</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="login.html">退出登錄</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </header>
+
+            <!-- 訂單管理內容 -->
+            <div class="content-area">
+                <!-- 訂單統計 -->
+                <div class="order-summary">
+                    <h5 class="mb-4">
+                        <i class="fas fa-chart-pie text-primary"></i> 訂單統計
+                    </h5>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="summary-card total">
+                                <h4 class="mb-2">1,847</h4>
+                                <p class="mb-0">總訂單數</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="summary-card pending">
+                                <h4 class="mb-2">156</h4>
+                                <p class="mb-0">待處理</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="summary-card completed">
+                                <h4 class="mb-2">1,523</h4>
+                                <p class="mb-0">已完成</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="summary-card cancelled">
+                                <h4 class="mb-2">168</h4>
+                                <p class="mb-0">已取消</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 搜索和篩選 -->
+                <div class="search-filters">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                <input type="text" class="form-control" placeholder="搜索訂單編號..." id="searchInput">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <select class="form-select" id="statusFilter">
+                                <option value="">所有狀態</option>
+                                <option value="pending">待付款</option>
+                                <option value="paid">已付款</option>
+                                <option value="shipped">已發貨</option>
+                                <option value="delivered">已送達</option>
+                                <option value="cancelled">已取消</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select class="form-select" id="paymentFilter">
+                                <option value="">付款狀態</option>
+                                <option value="pending">待付款</option>
+                                <option value="completed">已付款</option>
+                                <option value="failed">付款失敗</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="date" class="form-control" id="dateFrom">
+                        </div>
+                        <div class="col-md-2">
+                            <input type="date" class="form-control" id="dateTo">
+                        </div>
+                        <div class="col-md-1">
+                            <button class="btn btn-outline-primary w-100" onclick="filterOrders()">
+                                <i class="fas fa-filter"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 訂單列表 -->
+                <div class="order-table">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="mb-0">
+                            <i class="fas fa-shopping-cart text-primary"></i> 訂單列表
+                            <span class="badge bg-secondary ms-2" id="orderCount">1,847</span>
+                        </h5>
+                        <div class="btn-group">
+                            <button class="btn btn-outline-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+                                批量操作
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#" onclick="batchUpdateStatus('shipped')">標記為已發貨</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="batchUpdateStatus('delivered')">標記為已送達</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#" onclick="batchExport()">導出選中訂單</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th width="5%">
+                                        <input type="checkbox" class="form-check-input" id="selectAll">
+                                    </th>
+                                    <th width="12%">訂單編號</th>
+                                    <th width="15%">客戶信息</th>
+                                    <th width="20%">商品信息</th>
+                                    <th width="10%">訂單金額</th>
+                                    <th width="10%">訂單狀態</th>
+                                    <th width="10%">付款狀態</th>
+                                    <th width="12%">下單時間</th>
+                                    <th width="6%">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orderTableBody">
+                                <tr>
+                                    <td><input type="checkbox" class="form-check-input order-checkbox" data-id="ORD001"></td>
+                                    <td>
+                                        <strong>#ORD001</strong>
+                                        <br><small class="text-muted">線上訂單</small>
+                                    </td>
+                                    <td>
+                                        <strong>張小明</strong>
+                                        <br><small class="text-muted">0912-345-678</small>
+                                        <br><small class="text-muted">台北市信義區</small>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                                                 class="me-2" style="width: 40px; height: 40px; object-fit: cover; border-radius: 5px;">
+                                            <div>
+                                                <strong>現代簡約沙發</strong>
+                                                <br><small class="text-muted">數量: 1</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><strong>NT$ 35,800</strong></td>
+                                    <td><span class="order-status status-paid">已付款</span></td>
+                                    <td><span class="payment-status payment-completed">已付款</span></td>
+                                    <td>
+                                        <small>2024-01-15</small>
+                                        <br><small class="text-muted">14:30</small>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+                                                <i class="fas fa-cog"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="#" onclick="viewOrder('ORD001')">查看詳情</a></li>
+                                                <li><a class="dropdown-item" href="#" onclick="updateOrderStatus('ORD001')">更新狀態</a></li>
+                                                <li><a class="dropdown-item" href="#" onclick="printOrder('ORD001')">打印訂單</a></li>
+                                                <li><hr class="dropdown-divider"></li>
+                                                <li><a class="dropdown-item text-danger" href="#" onclick="cancelOrder('ORD001')">取消訂單</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="form-check-input order-checkbox" data-id="ORD002"></td>
+                                    <td>
+                                        <strong>#ORD002</strong>
+                                        <br><small class="text-muted">線上訂單</small>
+                                    </td>
+                                    <td>
+                                        <strong>李小華</strong>
+                                        <br><small class="text-muted">0987-654-321</small>
+                                        <br><small class="text-muted">台中市西區</small>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                                                 class="me-2" style="width: 40px; height: 40px; object-fit: cover; border-radius: 5px;">
+                                            <div>
+                                                <strong>實木雙人床架</strong>
+                                                <br><small class="text-muted">數量: 1</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><strong>NT$ 28,500</strong></td>
+                                    <td><span class="order-status status-pending">待付款</span></td>
+                                    <td><span class="payment-status payment-pending">待付款</span></td>
+                                    <td>
+                                        <small>2024-01-15</small>
+                                        <br><small class="text-muted">13:45</small>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+                                                <i class="fas fa-cog"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="#" onclick="viewOrder('ORD002')">查看詳情</a></li>
+                                                <li><a class="dropdown-item" href="#" onclick="updateOrderStatus('ORD002')">更新狀態</a></li>
+                                                <li><a class="dropdown-item" href="#" onclick="sendPaymentReminder('ORD002')">付款提醒</a></li>
+                                                <li><hr class="dropdown-divider"></li>
+                                                <li><a class="dropdown-item text-danger" href="#" onclick="cancelOrder('ORD002')">取消訂單</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="form-check-input order-checkbox" data-id="ORD003"></td>
+                                    <td>
+                                        <strong>#ORD003</strong>
+                                        <br><small class="text-muted">線上訂單</small>
+                                    </td>
+                                    <td>
+                                        <strong>王大明</strong>
+                                        <br><small class="text-muted">0955-123-456</small>
+                                        <br><small class="text-muted">高雄市前鎮區</small>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                                                 class="me-2" style="width: 40px; height: 40px; object-fit: cover; border-radius: 5px;">
+                                            <div>
+                                                <strong>橡木餐桌</strong>
+                                                <br><small class="text-muted">數量: 1</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><strong>NT$ 45,200</strong></td>
+                                    <td><span class="order-status status-shipped">已發貨</span></td>
+                                    <td><span class="payment-status payment-completed">已付款</span></td>
+                                    <td>
+                                        <small>2024-01-14</small>
+                                        <br><small class="text-muted">16:20</small>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+                                                <i class="fas fa-cog"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="#" onclick="viewOrder('ORD003')">查看詳情</a></li>
+                                                <li><a class="dropdown-item" href="#" onclick="trackShipment('ORD003')">物流追蹤</a></li>
+                                                <li><a class="dropdown-item" href="#" onclick="updateOrderStatus('ORD003')">更新狀態</a></li>
+                                                <li><hr class="dropdown-divider"></li>
+                                                <li><a class="dropdown-item" href="#" onclick="printOrder('ORD003')">打印訂單</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 分頁 -->
+                    <nav aria-label="訂單分頁" class="mt-4">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1">上一頁</a>
+                            </li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">下一頁</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 訂單詳情模態框 -->
+    <div class="modal fade" id="orderDetailModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-eye"></i> 訂單詳情 - <span id="orderDetailNumber">#ORD001</span>
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <!-- 訂單商品 -->
+                            <h6 class="mb-3">訂單商品</h6>
+                            <div id="orderItems">
+                                <div class="order-detail-item">
+                                    <div class="d-flex align-items-center">
+                                        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                                             style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;" class="me-3">
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1">現代簡約沙發</h6>
+                                            <small class="text-muted">SKU: SF001</small>
+                                        </div>
+                                        <div class="text-end">
+                                            <div>數量: 1</div>
+                                            <div><strong>NT$ 35,800</strong></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 配送信息 -->
+                            <h6 class="mb-3 mt-4">配送信息</h6>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p><strong>收件人:</strong> 張小明</p>
+                                    <p><strong>電話:</strong> 0912-345-678</p>
+                                    <p><strong>地址:</strong> 台北市信義區松仁路100號</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>配送方式:</strong> 宅配到府</p>
+                                    <p><strong>預計送達:</strong> 2024-01-18</p>
+                                    <p><strong>物流編號:</strong> SF123456789</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <!-- 訂單狀態時間軸 -->
+                            <h6 class="mb-3">訂單狀態</h6>
+                            <div class="timeline">
+                                <div class="timeline-item completed">
+                                    <div class="fw-bold">訂單已建立</div>
+                                    <small class="text-muted">2024-01-15 14:30</small>
+                                </div>
+                                <div class="timeline-item completed">
+                                    <div class="fw-bold">付款完成</div>
+                                    <small class="text-muted">2024-01-15 14:35</small>
+                                </div>
+                                <div class="timeline-item completed">
+                                    <div class="fw-bold">訂單確認</div>
+                                    <small class="text-muted">2024-01-15 15:00</small>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="fw-bold text-muted">準備出貨</div>
+                                    <small class="text-muted">待處理</small>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="fw-bold text-muted">已發貨</div>
+                                    <small class="text-muted">待處理</small>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="fw-bold text-muted">已送達</div>
+                                    <small class="text-muted">待處理</small>
+                                </div>
+                            </div>
+                            
+                            <!-- 訂單總計 -->
+                            <div class="mt-4 p-3 bg-light rounded">
+                                <div class="d-flex justify-content-between">
+                                    <span>商品總計:</span>
+                                    <span>NT$ 35,800</span>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span>運費:</span>
+                                    <span>NT$ 0</span>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span>優惠折扣:</span>
+                                    <span class="text-success">-NT$ 0</span>
+                                </div>
+                                <hr>
+                                <div class="d-flex justify-content-between fw-bold">
+                                    <span>訂單總計:</span>
+                                    <span>NT$ 35,800</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                    <button type="button" class="btn btn-primary" onclick="printOrder()">
+                        <i class="fas fa-print"></i> 打印訂單
+                    </button>
+                    <button type="button" class="btn btn-success" onclick="updateStatus()">
+                        <i class="fas fa-edit"></i> 更新狀態
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/admin-main.js"></script>
+    <script>
+        // 訂單管理功能
+        function filterOrders() {
+            const search = document.getElementById('searchInput').value;
+            const status = document.getElementById('statusFilter').value;
+            const payment = document.getElementById('paymentFilter').value;
+            const dateFrom = document.getElementById('dateFrom').value;
+            const dateTo = document.getElementById('dateTo').value;
+            
+            console.log('篩選訂單:', { search, status, payment, dateFrom, dateTo });
+            // 這裡可以添加AJAX調用來篩選訂單
+        }
+
+        function viewOrder(orderId) {
+            console.log('查看訂單:', orderId);
+            // 載入訂單詳情並顯示模態框
+            document.getElementById('orderDetailNumber').textContent = '#' + orderId;
+            const modal = new bootstrap.Modal(document.getElementById('orderDetailModal'));
+            modal.show();
+        }
+
+        function updateOrderStatus(orderId) {
+            console.log('更新訂單狀態:', orderId);
+            // 顯示狀態更新界面
+        }
+
+        function cancelOrder(orderId) {
+            if (confirm('確定要取消這個訂單嗎？')) {
+                console.log('取消訂單:', orderId);
+                // 發送取消請求
+            }
+        }
+
+        function printOrder(orderId) {
+            console.log('打印訂單:', orderId);
+            // 打印功能
+            window.print();
+        }
+
+        function trackShipment(orderId) {
+            console.log('物流追蹤:', orderId);
+            // 跳轉到物流追蹤頁面
+        }
+
+        function sendPaymentReminder(orderId) {
+            console.log('發送付款提醒:', orderId);
+            // 發送付款提醒
+        }
+
+        function exportOrders() {
+            console.log('導出訂單數據');
+            // 導出功能
+        }
+
+        function batchUpdateStatus(status) {
+            const selected = document.querySelectorAll('.order-checkbox:checked');
+            if (selected.length === 0) {
+                alert('請先選擇要操作的訂單');
+                return;
+            }
+            
+            console.log('批量更新狀態:', status, selected.length);
+            // 批量更新狀態
+        }
+
+        function batchExport() {
+            const selected = document.querySelectorAll('.order-checkbox:checked');
+            if (selected.length === 0) {
+                alert('請先選擇要導出的訂單');
+                return;
+            }
+            
+            console.log('批量導出訂單:', selected.length);
+            // 批量導出
+        }
+
+        // 全選功能
+        document.getElementById('selectAll').addEventListener('change', function() {
+            const checkboxes = document.querySelectorAll('.order-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+            });
+        });
+
+        // 實時更新訂單統計
+        function updateOrderStats() {
+            // 這裡可以添加AJAX調用來獲取實時統計數據
+            console.log('更新訂單統計...');
+        }
+
+        // 每30秒更新一次統計
+        setInterval(updateOrderStats, 30000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYY家具 - 數據分析</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/chart.js@4.0.1/dist/chart.min.css" rel="stylesheet">
+    <link href="css/admin-style.css" rel="stylesheet">
+    <style>
+        .analytics-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            transition: transform 0.3s ease;
+        }
+        
+        .analytics-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .metric-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            transform: rotate(45deg);
+        }
+        
+        .metric-card.revenue { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .metric-card.orders { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+        .metric-card.customers { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); }
+        .metric-card.products { background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%); color: #333; }
+        
+        .metric-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .metric-label {
+            font-size: 1rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .metric-change {
+            font-size: 0.85rem;
+            margin-top: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .chart-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            position: relative;
+            height: 400px;
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .date-filter {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .top-products-table {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .product-rank {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .rank-1 { background: #ffd700; }
+        .rank-2 { background: #c0c0c0; }
+        .rank-3 { background: #cd7f32; }
+        .rank-other { background: #6c757d; }
+        
+        .trend-indicator {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .trend-up { background-color: #d4edda; color: #155724; }
+        .trend-down { background-color: #f8d7da; color: #721c24; }
+        .trend-stable { background-color: #e2e3e5; color: #383d41; }
+        
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .kpi-item {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .kpi-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        
+        .kpi-label {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- 側邊欄 -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h4 class="text-white">CYY管理後台</h4>
+            </div>
+            <ul class="sidebar-nav">
+                <li class="nav-item">
+                    <a href="dashboard.html" class="nav-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>儀表板</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="products.html" class="nav-link">
+                        <i class="fas fa-box"></i>
+                        <span>產品管理</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="orders.html" class="nav-link">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>訂單管理</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="users.html" class="nav-link">
+                        <i class="fas fa-users"></i>
+                        <span>用戶管理</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="analytics.html" class="nav-link active">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>數據分析</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>系統設置</span>
+                    </a>
+                </li>
+                <li class="nav-item mt-auto">
+                    <a href="../index.html" class="nav-link">
+                        <i class="fas fa-home"></i>
+                        <span>返回前台</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="login.html" class="nav-link">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>退出登錄</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- 主內容區域 -->
+        <div class="main-content">
+            <!-- 頂部導航 -->
+            <header class="topbar">
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-link sidebar-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h2 class="ms-3 mb-0">數據分析</h2>
+                </div>
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-outline-primary me-3" onclick="exportReport()">
+                        <i class="fas fa-download"></i> 導出報表
+                    </button>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user"></i> 管理員
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="profile.html">個人資料</a></li>
+                            <li><a class="dropdown-item" href="settings.html">設置</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="login.html">退出登錄</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </header>
+
+            <!-- 數據分析內容 -->
+            <div class="content-area">
+                <!-- 日期篩選 -->
+                <div class="date-filter">
+                    <div class="row align-items-center">
+                        <div class="col-md-3">
+                            <h5 class="mb-0">
+                                <i class="fas fa-calendar text-primary"></i> 時間範圍
+                            </h5>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">開始日期</label>
+                            <input type="date" class="form-control" id="startDate" value="2024-01-01">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">結束日期</label>
+                            <input type="date" class="form-control" id="endDate" value="2024-01-31">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">&nbsp;</label>
+                            <div class="d-grid">
+                                <button class="btn btn-primary" onclick="updateAnalytics()">
+                                    <i class="fas fa-sync"></i> 更新數據
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="setDateRange('today')">今天</button>
+                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="setDateRange('week')">本週</button>
+                                <button type="button" class="btn btn-outline-secondary btn-sm active" onclick="setDateRange('month')">本月</button>
+                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="setDateRange('quarter')">本季</button>
+                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="setDateRange('year')">本年</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 核心指標 -->
+                <div class="row">
+                    <div class="col-xl-3 col-md-6">
+                        <div class="metric-card revenue">
+                            <div class="metric-number" id="totalRevenue">NT$ 1,234,567</div>
+                            <div class="metric-label">總營收</div>
+                            <div class="metric-change">
+                                <i class="fas fa-arrow-up"></i> 12.5% 較上月
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6">
+                        <div class="metric-card orders">
+                            <div class="metric-number" id="totalOrders">1,847</div>
+                            <div class="metric-label">總訂單</div>
+                            <div class="metric-change">
+                                <i class="fas fa-arrow-up"></i> 8.2% 較上月
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6">
+                        <div class="metric-card customers">
+                            <div class="metric-number" id="totalCustomers">3,456</div>
+                            <div class="metric-label">客戶數量</div>
+                            <div class="metric-change">
+                                <i class="fas fa-arrow-up"></i> 15.3% 較上月
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6">
+                        <div class="metric-card products">
+                            <div class="metric-number" id="avgOrderValue">NT$ 668</div>
+                            <div class="metric-label">平均訂單金額</div>
+                            <div class="metric-change">
+                                <i class="fas fa-arrow-up"></i> 5.7% 較上月
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KPI指標 -->
+                <div class="kpi-grid">
+                    <div class="kpi-item">
+                        <div class="kpi-value">92.3%</div>
+                        <div class="kpi-label">訂單完成率</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-value">24.5%</div>
+                        <div class="kpi-label">回購率</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-value">3.2</div>
+                        <div class="kpi-label">平均購買次數</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-value">15.8%</div>
+                        <div class="kpi-label">轉換率</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-value">4.7/5</div>
+                        <div class="kpi-label">平均評分</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-value">2.3天</div>
+                        <div class="kpi-label">平均配送時間</div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- 銷售趨勢圖 -->
+                    <div class="col-xl-8 col-lg-7">
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-chart-line text-primary"></i> 銷售趨勢分析
+                                </h5>
+                                <div class="btn-group btn-group-sm">
+                                    <button class="btn btn-outline-primary active" onclick="changeChartPeriod('daily')">日</button>
+                                    <button class="btn btn-outline-primary" onclick="changeChartPeriod('weekly')">週</button>
+                                    <button class="btn btn-outline-primary" onclick="changeChartPeriod('monthly')">月</button>
+                                </div>
+                            </div>
+                            <canvas id="salesTrendChart" height="100"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- 分類銷售占比 -->
+                    <div class="col-xl-4 col-lg-5">
+                        <div class="chart-container">
+                            <h5 class="mb-4">
+                                <i class="fas fa-chart-pie text-primary"></i> 分類銷售占比
+                            </h5>
+                            <canvas id="categoryChart" height="150"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- 用戶行為分析 -->
+                    <div class="col-xl-6">
+                        <div class="chart-container">
+                            <h5 class="mb-4">
+                                <i class="fas fa-users text-primary"></i> 用戶行為分析
+                            </h5>
+                            <canvas id="userBehaviorChart" height="150"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- 地區銷售分佈 -->
+                    <div class="col-xl-6">
+                        <div class="chart-container">
+                            <h5 class="mb-4">
+                                <i class="fas fa-map-marker-alt text-primary"></i> 地區銷售分佈
+                            </h5>
+                            <canvas id="regionChart" height="150"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 熱銷產品排行 -->
+                <div class="top-products-table">
+                    <h5 class="mb-4">
+                        <i class="fas fa-trophy text-warning"></i> 熱銷產品排行榜
+                    </h5>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th width="8%">排名</th>
+                                    <th width="12%">產品圖片</th>
+                                    <th width="25%">產品名稱</th>
+                                    <th width="15%">分類</th>
+                                    <th width="12%">銷售數量</th>
+                                    <th width="15%">銷售金額</th>
+                                    <th width="13%">趨勢</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="product-rank rank-1">1</div>
+                                    </td>
+                                    <td>
+                                        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                                             style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
+                                    </td>
+                                    <td>
+                                        <strong>現代簡約沙發</strong>
+                                        <br><small class="text-muted">SKU: SF001</small>
+                                    </td>
+                                    <td><span class="badge bg-info">客廳家具</span></td>
+                                    <td><strong>156</strong> 件</td>
+                                    <td><strong>NT$ 5,584,800</strong></td>
+                                    <td>
+                                        <span class="trend-indicator trend-up">
+                                            <i class="fas fa-arrow-up"></i> +23%
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="product-rank rank-2">2</div>
+                                    </td>
+                                    <td>
+                                        <img src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                                             style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
+                                    </td>
+                                    <td>
+                                        <strong>實木雙人床架</strong>
+                                        <br><small class="text-muted">SKU: BD001</small>
+                                    </td>
+                                    <td><span class="badge bg-warning">臥室家具</span></td>
+                                    <td><strong>134</strong> 件</td>
+                                    <td><strong>NT$ 3,819,000</strong></td>
+                                    <td>
+                                        <span class="trend-indicator trend-up">
+                                            <i class="fas fa-arrow-up"></i> +15%
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="product-rank rank-3">3</div>
+                                    </td>
+                                    <td>
+                                        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                                             style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
+                                    </td>
+                                    <td>
+                                        <strong>橡木餐桌</strong>
+                                        <br><small class="text-muted">SKU: DT001</small>
+                                    </td>
+                                    <td><span class="badge bg-success">餐廳家具</span></td>
+                                    <td><strong>98</strong> 件</td>
+                                    <td><strong>NT$ 4,429,600</strong></td>
+                                    <td>
+                                        <span class="trend-indicator trend-stable">
+                                            <i class="fas fa-minus"></i> 0%
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="product-rank rank-other">4</div>
+                                    </td>
+                                    <td>
+                                        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                                             style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
+                                    </td>
+                                    <td>
+                                        <strong>現代書櫃</strong>
+                                        <br><small class="text-muted">SKU: BK001</small>
+                                    </td>
+                                    <td><span class="badge bg-info">客廳家具</span></td>
+                                    <td><strong>87</strong> 件</td>
+                                    <td><strong>NT$ 1,374,600</strong></td>
+                                    <td>
+                                        <span class="trend-indicator trend-down">
+                                            <i class="fas fa-arrow-down"></i> -8%
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="product-rank rank-other">5</div>
+                                    </td>
+                                    <td>
+                                        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                                             style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
+                                    </td>
+                                    <td>
+                                        <strong>辦公桌椅組合</strong>
+                                        <br><small class="text-muted">SKU: OF001</small>
+                                    </td>
+                                    <td><span class="badge bg-secondary">辦公家具</span></td>
+                                    <td><strong>76</strong> 件</td>
+                                    <td><strong>NT$ 1,824,000</strong></td>
+                                    <td>
+                                        <span class="trend-indicator trend-up">
+                                            <i class="fas fa-arrow-up"></i> +12%
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/admin-main.js"></script>
+    <script>
+        // 圖表初始化
+        let salesTrendChart, categoryChart, userBehaviorChart, regionChart;
+
+        // 初始化所有圖表
+        function initCharts() {
+            // 銷售趨勢圖
+            const salesCtx = document.getElementById('salesTrendChart').getContext('2d');
+            salesTrendChart = new Chart(salesCtx, {
+                type: 'line',
+                data: {
+                    labels: ['1/1', '1/8', '1/15', '1/22', '1/29'],
+                    datasets: [{
+                        label: '銷售額',
+                        data: [120000, 190000, 300000, 250000, 420000],
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }, {
+                        label: '訂單數',
+                        data: [180, 290, 450, 380, 630],
+                        borderColor: '#38ef7d',
+                        backgroundColor: 'rgba(56, 239, 125, 0.1)',
+                        tension: 0.4,
+                        yAxisID: 'y1'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            grid: {
+                                drawOnChartArea: false,
+                            },
+                        }
+                    }
+                }
+            });
+
+            // 分類銷售占比圖
+            const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+            categoryChart = new Chart(categoryCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['客廳家具', '臥室家具', '餐廳家具', '辦公家具'],
+                    datasets: [{
+                        data: [35, 28, 22, 15],
+                        backgroundColor: [
+                            '#667eea',
+                            '#38ef7d',
+                            '#ff9a9e',
+                            '#ffeaa7'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+
+            // 用戶行為分析圖
+            const userCtx = document.getElementById('userBehaviorChart').getContext('2d');
+            userBehaviorChart = new Chart(userCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['瀏覽', '加入購物車', '結帳', '付款', '完成'],
+                    datasets: [{
+                        label: '用戶數量',
+                        data: [10000, 3500, 1800, 1650, 1580],
+                        backgroundColor: [
+                            '#667eea',
+                            '#38ef7d',
+                            '#ff9a9e',
+                            '#ffeaa7',
+                            '#fab1a0'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+
+            // 地區銷售分佈圖
+            const regionCtx = document.getElementById('regionChart').getContext('2d');
+            regionChart = new Chart(regionCtx, {
+                type: 'polarArea',
+                data: {
+                    labels: ['台北', '台中', '高雄', '台南', '其他'],
+                    datasets: [{
+                        data: [40, 25, 20, 10, 5],
+                        backgroundColor: [
+                            'rgba(102, 126, 234, 0.8)',
+                            'rgba(56, 239, 125, 0.8)',
+                            'rgba(255, 154, 158, 0.8)',
+                            'rgba(255, 234, 167, 0.8)',
+                            'rgba(250, 177, 160, 0.8)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        // 更新分析數據
+        function updateAnalytics() {
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            
+            console.log('更新分析數據:', { startDate, endDate });
+            // 這裡可以添加AJAX調用來更新數據
+        }
+
+        // 設置日期範圍
+        function setDateRange(period) {
+            const today = new Date();
+            let startDate, endDate = today;
+            
+            switch(period) {
+                case 'today':
+                    startDate = today;
+                    break;
+                case 'week':
+                    startDate = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+                    break;
+                case 'month':
+                    startDate = new Date(today.getFullYear(), today.getMonth(), 1);
+                    break;
+                case 'quarter':
+                    startDate = new Date(today.getFullYear(), Math.floor(today.getMonth() / 3) * 3, 1);
+                    break;
+                case 'year':
+                    startDate = new Date(today.getFullYear(), 0, 1);
+                    break;
+            }
+            
+            document.getElementById('startDate').value = startDate.toISOString().split('T')[0];
+            document.getElementById('endDate').value = endDate.toISOString().split('T')[0];
+            
+            // 更新按鈕狀態
+            document.querySelectorAll('.btn-group .btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            updateAnalytics();
+        }
+
+        // 改變圖表週期
+        function changeChartPeriod(period) {
+            console.log('改變圖表週期:', period);
+            // 更新銷售趨勢圖數據
+            
+            // 更新按鈕狀態
+            document.querySelectorAll('.chart-header .btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        // 導出報表
+        function exportReport() {
+            console.log('導出分析報表');
+            // 導出功能
+        }
+
+        // 頁面載入時初始化圖表
+        document.addEventListener('DOMContentLoaded', function() {
+            initCharts();
+        });
+
+        // 實時更新數據
+        function updateRealTimeData() {
+            // 這裡可以添加AJAX調用來獲取實時數據
+            console.log('更新實時數據...');
+        }
+
+        // 每60秒更新一次實時數據
+        setInterval(updateRealTimeData, 60000);
+    </script>
+</body>
+</html>
+

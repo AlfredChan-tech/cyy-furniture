@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYY家具 - 產品管理</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/admin-style.css" rel="stylesheet">
+    <style>
+        .product-table {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .product-image {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .status-active { background-color: #d4edda; color: #155724; }
+        .status-inactive { background-color: #f8d7da; color: #721c24; }
+        .status-draft { background-color: #fff3cd; color: #856404; }
+        
+        .action-buttons .btn {
+            margin-right: 5px;
+            padding: 5px 10px;
+            font-size: 0.85rem;
+        }
+        
+        .add-product-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .add-product-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            color: white;
+        }
+        
+        .search-filters {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .modal-content {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px 15px 0 0;
+        }
+        
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        
+        .image-upload-area {
+            border: 2px dashed #dee2e6;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .image-upload-area:hover {
+            border-color: #667eea;
+            background-color: #f8f9ff;
+        }
+        
+        .image-upload-area.dragover {
+            border-color: #667eea;
+            background-color: #f0f2ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- 側邊欄 -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h4 class="text-white">CYY管理後台</h4>
+            </div>
+            <ul class="sidebar-nav">
+                <li class="nav-item">
+                    <a href="dashboard.html" class="nav-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>儀表板</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="products.html" class="nav-link active">
+                        <i class="fas fa-box"></i>
+                        <span>產品管理</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="orders.html" class="nav-link">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>訂單管理</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="users.html" class="nav-link">
+                        <i class="fas fa-users"></i>
+                        <span>用戶管理</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="analytics.html" class="nav-link">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>數據分析</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>系統設置</span>
+                    </a>
+                </li>
+                <li class="nav-item mt-auto">
+                    <a href="../index.html" class="nav-link">
+                        <i class="fas fa-home"></i>
+                        <span>返回前台</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="login.html" class="nav-link">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>退出登錄</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- 主內容區域 -->
+        <div class="main-content">
+            <!-- 頂部導航 -->
+            <header class="topbar">
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-link sidebar-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h2 class="ms-3 mb-0">產品管理</h2>
+                </div>
+                <div class="d-flex align-items-center">
+                    <button class="btn add-product-btn me-3" data-bs-toggle="modal" data-bs-target="#addProductModal">
+                        <i class="fas fa-plus"></i> 新增產品
+                    </button>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user"></i> 管理員
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="profile.html">個人資料</a></li>
+                            <li><a class="dropdown-item" href="settings.html">設置</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="login.html">退出登錄</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </header>
+
+            <!-- 產品管理內容 -->
+            <div class="content-area">
+                <!-- 搜索和篩選 -->
+                <div class="search-filters">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                <input type="text" class="form-control" placeholder="搜索產品名稱或SKU..." id="searchInput">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select" id="categoryFilter">
+                                <option value="">所有分類</option>
+                                <option value="living">客廳家具</option>
+                                <option value="bedroom">臥室家具</option>
+                                <option value="dining">餐廳家具</option>
+                                <option value="office">辦公家具</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select" id="statusFilter">
+                                <option value="">所有狀態</option>
+                                <option value="active">上架中</option>
+                                <option value="inactive">已下架</option>
+                                <option value="draft">草稿</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-outline-primary w-100" onclick="filterProducts()">
+                                <i class="fas fa-filter"></i> 篩選
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 產品列表 -->
+                <div class="product-table">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="mb-0">
+                            <i class="fas fa-box text-primary"></i> 產品列表
+                            <span class="badge bg-secondary ms-2" id="productCount">234</span>
+                        </h5>
+                        <div class="btn-group">
+                            <button class="btn btn-outline-secondary btn-sm" onclick="exportProducts()">
+                                <i class="fas fa-download"></i> 導出
+                            </button>
+                            <button class="btn btn-outline-secondary btn-sm" onclick="importProducts()">
+                                <i class="fas fa-upload"></i> 導入
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th width="5%">
+                                        <input type="checkbox" class="form-check-input" id="selectAll">
+                                    </th>
+                                    <th width="10%">圖片</th>
+                                    <th width="25%">產品名稱</th>
+                                    <th width="10%">SKU</th>
+                                    <th width="10%">分類</th>
+                                    <th width="10%">價格</th>
+                                    <th width="8%">庫存</th>
+                                    <th width="10%">狀態</th>
+                                    <th width="12%">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productTableBody">
+                                <tr>
+                                    <td><input type="checkbox" class="form-check-input product-checkbox" data-id="1"></td>
+                                    <td>
+                                        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                                             alt="現代簡約沙發" class="product-image">
+                                    </td>
+                                    <td>
+                                        <strong>現代簡約沙發</strong>
+                                        <br><small class="text-muted">舒適的三人座沙發，適合現代家居風格</small>
+                                    </td>
+                                    <td><code>SF001</code></td>
+                                    <td><span class="badge bg-info">客廳家具</span></td>
+                                    <td><strong>NT$ 35,800</strong></td>
+                                    <td>
+                                        <span class="badge bg-success">25</span>
+                                    </td>
+                                    <td><span class="status-badge status-active">上架中</span></td>
+                                    <td class="action-buttons">
+                                        <button class="btn btn-outline-primary btn-sm" onclick="editProduct(1)">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-outline-info btn-sm" onclick="viewProduct(1)">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-outline-danger btn-sm" onclick="deleteProduct(1)">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="form-check-input product-checkbox" data-id="2"></td>
+                                    <td>
+                                        <img src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                                             alt="實木雙人床架" class="product-image">
+                                    </td>
+                                    <td>
+                                        <strong>實木雙人床架</strong>
+                                        <br><small class="text-muted">精選實木製作，堅固耐用的雙人床架</small>
+                                    </td>
+                                    <td><code>BD001</code></td>
+                                    <td><span class="badge bg-warning">臥室家具</span></td>
+                                    <td><strong>NT$ 28,500</strong></td>
+                                    <td>
+                                        <span class="badge bg-warning">5</span>
+                                    </td>
+                                    <td><span class="status-badge status-active">上架中</span></td>
+                                    <td class="action-buttons">
+                                        <button class="btn btn-outline-primary btn-sm" onclick="editProduct(2)">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-outline-info btn-sm" onclick="viewProduct(2)">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-outline-danger btn-sm" onclick="deleteProduct(2)">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="form-check-input product-checkbox" data-id="3"></td>
+                                    <td>
+                                        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                                             alt="橡木餐桌" class="product-image">
+                                    </td>
+                                    <td>
+                                        <strong>橡木餐桌</strong>
+                                        <br><small class="text-muted">天然橡木材質，六人座餐桌</small>
+                                    </td>
+                                    <td><code>DT001</code></td>
+                                    <td><span class="badge bg-success">餐廳家具</span></td>
+                                    <td><strong>NT$ 45,200</strong></td>
+                                    <td>
+                                        <span class="badge bg-danger">0</span>
+                                    </td>
+                                    <td><span class="status-badge status-inactive">缺貨</span></td>
+                                    <td class="action-buttons">
+                                        <button class="btn btn-outline-primary btn-sm" onclick="editProduct(3)">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-outline-info btn-sm" onclick="viewProduct(3)">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-outline-danger btn-sm" onclick="deleteProduct(3)">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 分頁 -->
+                    <nav aria-label="產品分頁" class="mt-4">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1">上一頁</a>
+                            </li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">下一頁</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 新增產品模態框 -->
+    <div class="modal fade" id="addProductModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-plus"></i> 新增產品
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addProductForm">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label class="form-label">產品名稱 *</label>
+                                    <input type="text" class="form-control" name="productName" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">產品描述</label>
+                                    <textarea class="form-control" name="productDescription" rows="4"></textarea>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">SKU *</label>
+                                            <input type="text" class="form-control" name="productSku" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">分類 *</label>
+                                            <select class="form-select" name="productCategory" required>
+                                                <option value="">選擇分類</option>
+                                                <option value="living">客廳家具</option>
+                                                <option value="bedroom">臥室家具</option>
+                                                <option value="dining">餐廳家具</option>
+                                                <option value="office">辦公家具</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">價格 (NT$) *</label>
+                                            <input type="number" class="form-control" name="productPrice" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">庫存數量 *</label>
+                                            <input type="number" class="form-control" name="productStock" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">產品圖片</label>
+                                    <div class="image-upload-area" onclick="document.getElementById('productImage').click()">
+                                        <i class="fas fa-cloud-upload-alt fa-3x text-muted mb-3"></i>
+                                        <p class="text-muted">點擊或拖拽圖片到此處</p>
+                                        <input type="file" id="productImage" name="productImage" accept="image/*" style="display: none;">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">狀態</label>
+                                    <select class="form-select" name="productStatus">
+                                        <option value="active">上架中</option>
+                                        <option value="inactive">已下架</option>
+                                        <option value="draft">草稿</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" onclick="saveProduct()">
+                        <i class="fas fa-save"></i> 保存產品
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/admin-main.js"></script>
+    <script>
+        // 產品管理功能
+        function filterProducts() {
+            const search = document.getElementById('searchInput').value;
+            const category = document.getElementById('categoryFilter').value;
+            const status = document.getElementById('statusFilter').value;
+            
+            console.log('篩選產品:', { search, category, status });
+            // 這裡可以添加AJAX調用來篩選產品
+        }
+
+        function editProduct(id) {
+            console.log('編輯產品:', id);
+            // 打開編輯模態框
+        }
+
+        function viewProduct(id) {
+            console.log('查看產品:', id);
+            // 跳轉到產品詳情頁
+        }
+
+        function deleteProduct(id) {
+            if (confirm('確定要刪除這個產品嗎？')) {
+                console.log('刪除產品:', id);
+                // 發送刪除請求
+            }
+        }
+
+        function saveProduct() {
+            const form = document.getElementById('addProductForm');
+            const formData = new FormData(form);
+            
+            console.log('保存產品:', Object.fromEntries(formData));
+            // 發送保存請求
+            
+            // 關閉模態框
+            const modal = bootstrap.Modal.getInstance(document.getElementById('addProductModal'));
+            modal.hide();
+        }
+
+        function exportProducts() {
+            console.log('導出產品數據');
+            // 導出功能
+        }
+
+        function importProducts() {
+            console.log('導入產品數據');
+            // 導入功能
+        }
+
+        // 全選功能
+        document.getElementById('selectAll').addEventListener('change', function() {
+            const checkboxes = document.querySelectorAll('.product-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+            });
+        });
+
+        // 圖片上傳處理
+        document.getElementById('productImage').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    console.log('圖片已選擇:', file.name);
+                    // 顯示預覽圖片
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // 拖拽上傳
+        const uploadArea = document.querySelector('.image-upload-area');
+        
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                document.getElementById('productImage').files = files;
+                console.log('拖拽上傳圖片:', files[0].name);
+            }
+        });
+    </script>
+</body>
+</html>
